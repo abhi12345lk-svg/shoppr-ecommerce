@@ -1,0 +1,20 @@
+import express from "express";
+
+import {
+    adminLogin,
+    adminLogout,
+    isAdminAuth
+} from "../controllers/adminController.js";
+
+import authAdmin from "../middlewares/authAdmin.js";
+
+const adminRouter = express.Router();
+
+// Admin Routes
+adminRouter.post('/login', adminLogin);
+
+adminRouter.post('/logout', adminLogout);
+
+adminRouter.get('/is-auth', authAdmin, isAdminAuth);
+
+export default adminRouter;
