@@ -37,7 +37,7 @@ ShopContext
 /* ================= ADMIN ================= */
 
 import Sidebar from './components/admin/Sidebar'
-import AdminLogin from './components/admin/AdminLogin'
+import AdminLogin from './components/admin/AdminLogin.jsx'
 
 import AddProduct from './pages/admin/AddProduct'
 import ProductList from './pages/admin/ProductList'
