@@ -38,7 +38,10 @@ connectCloudinary();
 
 // ================= ALLOWED ORIGINS =================
 
-const allowedOrigins = ['http://localhost:5173'];
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://shoppr-ecommerce-b8wi.vercel.app'
+];
 
 // ================= MIDDLEWARE SETUP =================
 
@@ -48,9 +51,9 @@ app.use(cookieParser());
 
 app.use(cors({
 
-origin: allowedOrigins,
+  origin: allowedOrigins,
 
-credentials: true
+  credentials: true
 
 }));
 
@@ -74,7 +77,7 @@ app.use('/api/contact',contactRouter);
 
 app.get('/', (req, res) => {
 
-res.send('API sab work krr rha hai bhai letsgooo');
+  res.send('API sab work krr rha hai bhai letsgooo');
 
 });
 
@@ -82,12 +85,12 @@ res.send('API sab work krr rha hai bhai letsgooo');
 
 app.listen(port, () => {
 
-console.log(
+  console.log(
 
-'\x1b[32m%s\x1b[0m',
+    '\x1b[32m%s\x1b[0m',
 
-`Server is running on port http://localhost:${port}`
+    `Server is running on port http://localhost:${port}`
 
-);
+  );
 
 });
