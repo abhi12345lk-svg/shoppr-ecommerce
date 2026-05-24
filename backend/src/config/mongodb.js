@@ -2,25 +2,24 @@ import mongoose from 'mongoose';
 
 const connectDB = async () => {
 
-    await mongoose.connect('mongodb://127.0.0.1:27017/eCommerceDB');
+    try {
 
-    console.log('MongoDB Connected');
+        mongoose.connection.on('connected', () => {
 
-    let userSchema = new mongoose.Schema({
-        name: String,
-        email: String,
-        password: String
-    });
+            console.log('MongoDB Connected');
 
-    let userModel = mongoose.model("users", userSchema);
+        });
 
-    await userModel.create({
-        name: "Abhishek",
-        email: "abhishek@gmail.com",
-        password: "123456"
-    });
+        await mongoose.connect(process.env.MONGODB_URI);
 
-    console.log('User Data Inserted');
+    }
+
+    catch (error) {
+
+        console.log(error);
+
+    }
+
 };
 
 export default connectDB;
