@@ -39,8 +39,13 @@ connectCloudinary();
 // ================= ALLOWED ORIGINS =================
 
 const allowedOrigins = [
+
   'http://localhost:5173',
-  'https://shoppr-ecommerce-b8wi.vercel.app'
+
+  'https://shoppr-ecommerce-b8wi.vercel.app',
+
+  'https://shoppr-ecommerce-b8wi-git-main-abhishekopji.vercel.app'
+
 ];
 
 // ================= MIDDLEWARE SETUP =================
@@ -71,7 +76,7 @@ app.use('/api/order', orderRouter);
 
 app.use('/api/payment', paymentRouter);
 
-app.use('/api/contact',contactRouter);
+app.use('/api/contact', contactRouter);
 
 // ================= HOME ROUTE =================
 
