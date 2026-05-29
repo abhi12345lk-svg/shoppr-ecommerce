@@ -44,7 +44,9 @@ const allowedOrigins = [
 
   'https://shoppr-ecommerce-b8wi.vercel.app',
 
-  'https://shoppr-ecommerce-b8wi-git-main-abhishekopji.vercel.app'
+  'https://shoppr-ecommerce-b8wi-git-main-abhishekopji.vercel.app',
+
+  'https://shoppr-ecommerce-zh3r.vercel.app'
 
 ];
 
