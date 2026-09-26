@@ -65,30 +65,27 @@ const Home = () => {
       <StyleSpotlight />
 
       {/* 6. NEW SEASON ARRIVALS GRID */}
-      <section className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-12 sm:py-16">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 pb-4 border-b border-gray-100">
+      <section className="max-w-[1900px] mx-auto px-3 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-8 sm:py-12 sm:py-16">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5 sm:mb-8 pb-4 border-b border-gray-100">
           <div>
-            <p className="text-[11px] uppercase tracking-[3px] font-bold text-gray-400 mb-1.5">
+            <p className="text-[10px] uppercase tracking-[3px] font-bold text-gray-400 mb-1">
               Fresh Off The Rack
             </p>
-            <h2 className="font-display text-2xl sm:text-4xl font-black uppercase text-black tracking-tight">
-              New <span className="text-gray-400 font-light">Arrivals</span>
+            <h2 className="font-display text-xl sm:text-3xl lg:text-4xl font-black uppercase text-black tracking-tight">
+              New <span className="text-gray-300 font-light">Arrivals</span>
             </h2>
-            <p className="text-gray-500 text-xs sm:text-sm mt-1 max-w-lg">
-              Explore our latest drop of tailored cuts, streetwear essentials, and contemporary silhouettes.
-            </p>
           </div>
 
           <Link
             to="/collection"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-black uppercase tracking-wider hover:text-neutral-600 transition-colors"
+            className="self-start sm:self-auto text-[11px] font-bold text-black uppercase tracking-wider border-b border-black hover:border-gray-400 hover:text-gray-500 transition-colors"
           >
-            <span>View All New Drops</span>
-            <FiArrowRight size={14} />
+            View All
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* 2-col on mobile like Savana, 4-col on desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 lg:gap-5">
           {newArrivals.map((product) => (
             <Item key={product._id} product={product} />
           ))}
@@ -125,32 +122,33 @@ const Home = () => {
       </section>
 
       {/* 8. INSTAGRAM LOOKBOOK FEED */}
-      <section className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-12 sm:py-16">
-        <div className="text-center max-w-xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-[2px] mb-2">
-            <FiInstagram size={14} />
+      <section className="max-w-[1900px] mx-auto px-3 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-8 sm:py-12">
+        <div className="text-center max-w-xl mx-auto mb-6 sm:mb-10">
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-[2px] mb-2">
+            <FiInstagram size={12} />
             <span>#WornByShoppr</span>
           </div>
-          <h2 className="font-display text-2xl sm:text-4xl font-black uppercase text-black tracking-tight">
-            As Seen On You
+          <h2 className="font-display text-xl sm:text-3xl lg:text-4xl font-black uppercase text-black tracking-tight">
+            As Seen <span className="text-gray-300 font-light">On You</span>
           </h2>
-          <p className="text-gray-500 text-xs sm:text-sm mt-1">
-            Tag @shoppr.in on Instagram to be featured in our official fashion lookbook feed.
+          <p className="text-gray-400 text-xs mt-1 hidden sm:block">
+            Tag @shoppr.in on Instagram to be featured.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+        {/* 3-col on mobile, 6-col on desktop — tight grid */}
+        <div className="grid grid-cols-3 lg:grid-cols-6 gap-1 sm:gap-2">
           {instagramShots.map((shot, idx) => (
-            <div key={idx} className="group relative aspect-square rounded-2xl overflow-hidden bg-neutral-100 cursor-pointer shadow-xs">
+            <div key={idx} className="group relative aspect-square overflow-hidden bg-neutral-100 cursor-pointer">
               <img
                 src={shot.img}
                 alt={shot.tag}
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3 text-white">
-                <span className="text-[11px] font-bold truncate">{shot.handle}</span>
-                <span className="text-[10px] text-gray-300 truncate">{shot.tag}</span>
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2 text-white">
+                <span className="text-[10px] font-bold truncate">{shot.handle}</span>
+                <span className="text-[9px] text-gray-300 truncate">{shot.tag}</span>
               </div>
             </div>
           ))}

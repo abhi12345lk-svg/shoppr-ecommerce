@@ -22,8 +22,8 @@
     background-color: #fafafa;
     color: #111827;
     overflow-x: hidden;
-    /* Safe area for mobile bottom nav (56px) — only on screens < md */
-    padding-bottom: 64px;
+    /* Safe area for mobile bottom nav (54px) — only on screens < md */
+    padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px));
   }
 
   @media (min-width: 768px) {
