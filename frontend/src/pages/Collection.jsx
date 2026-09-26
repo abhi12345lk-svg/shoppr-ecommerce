@@ -37,11 +37,34 @@ const Collection = () => {
     )
   ];
 
-  // Sync category param from URL
+  // Sync query params from URL
   useEffect(() => {
     const cat = searchParams.get("category");
+    const sub = searchParams.get("subCategory");
+    const filter = searchParams.get("filter");
+    const type = searchParams.get("type");
+    const sale = searchParams.get("sale");
+
     if (cat) {
       setSelectedCategories([cat.toLowerCase()]);
+    } else {
+      setSelectedCategories([]);
+    }
+
+    if (sub) {
+      setSelectedSubCategories([sub]);
+    } else {
+      setSelectedSubCategories([]);
+    }
+
+    if (sale === "true" || filter === "sale") {
+      setMinDiscount(1);
+    } else {
+      setMinDiscount(0);
+    }
+
+    if (filter === "new") {
+      setSortType("newest");
     }
   }, [searchParams]);
 
@@ -72,36 +95,72 @@ const Collection = () => {
     setMinDiscount(0);
     setInStockOnly(false);
     setSortType("relevant");
+    setSearchParams({});
   };
 
   // ================= FILTER LOGIC =================
   useEffect(() => {
     let list = [...products];
 
+    const type = searchParams.get("type");
+    const filter = searchParams.get("filter");
+
     // Search query
     if (searchQuery && searchQuery.trim().length > 0) {
       const q = searchQuery.toLowerCase().trim();
       list = list.filter(
         (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q) ||
+          p.name?.toLowerCase().includes(q) ||
+          p.category?.toLowerCase().includes(q) ||
           (p.subCategory && p.subCategory.toLowerCase().includes(q)) ||
           (p.tags && p.tags.some((t) => t.toLowerCase().includes(q)))
       );
     }
 
+    // Type filter (e.g. topwear vs bottomwear)
+    if (type === "topwear") {
+      const topwearKeywords = ["tee", "shirt", "top", "hoodie", "polo", "sweater", "overcoat", "jacket", "blazer"];
+      list = list.filter((p) => {
+        const sub = (p.subCategory || "").toLowerCase();
+        const cat = (p.category || "").toLowerCase();
+        const name = (p.name || "").toLowerCase();
+        return topwearKeywords.some((k) => sub.includes(k) || name.includes(k) || cat.includes(k));
+      });
+    } else if (type === "bottomwear") {
+      const bottomwearKeywords = ["cargo", "pant", "jeans", "denim", "trouser", "jogger", "shorts"];
+      list = list.filter((p) => {
+        const sub = (p.subCategory || "").toLowerCase();
+        const cat = (p.category || "").toLowerCase();
+        const name = (p.name || "").toLowerCase();
+        return bottomwearKeywords.some((k) => sub.includes(k) || name.includes(k) || cat.includes(k));
+      });
+    }
+
+    // New arrivals filter
+    if (filter === "new") {
+      const newItems = list.filter((p) => p.isNewArrival);
+      if (newItems.length > 0) {
+        list = newItems;
+      }
+    }
+
     // Category filter
     if (selectedCategories.length > 0) {
       list = list.filter((p) =>
-        selectedCategories.includes(p.category.toLowerCase())
+        selectedCategories.includes(p.category?.toLowerCase())
       );
     }
 
-    // Subcategory filter
+    // Subcategory filter (flexible matching)
     if (selectedSubCategories.length > 0) {
-      list = list.filter((p) =>
-        selectedSubCategories.includes(p.subCategory)
-      );
+      list = list.filter((p) => {
+        if (!p.subCategory) return false;
+        const pSub = p.subCategory.toLowerCase().trim();
+        return selectedSubCategories.some((sel) => {
+          const s = sel.toLowerCase().trim();
+          return pSub === s || pSub.includes(s) || s.includes(pSub);
+        });
+      });
     }
 
     // Size filter
@@ -177,7 +236,8 @@ const Collection = () => {
     minDiscount,
     inStockOnly,
     sortType,
-    searchQuery
+    searchQuery,
+    searchParams
   ]);
 
   // Pagination
@@ -201,10 +261,34 @@ const Collection = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-4 border-b border-gray-200/80">
           <div>
             <p className="text-[11px] uppercase tracking-[3px] font-bold text-gray-400 mb-1">
-              Curated Catalogue
+              {(() => {
+                const f = searchParams.get("filter");
+                const s = searchParams.get("sale");
+                const t = searchParams.get("type");
+                const sub = searchParams.get("subCategory");
+                if (f === "new") return "Fresh Off The Atelier";
+                if (s === "true" || f === "sale") return "Special Markdowns";
+                if (sub) return "Curated Style Drop";
+                if (t === "topwear") return "Topwear Capsule";
+                if (t === "bottomwear") return "Bottomwear Capsule";
+                if (selectedCategories.length === 1) return "Curated Department";
+                return "Curated Catalogue";
+              })()}
             </p>
             <h1 className="font-display text-2xl sm:text-4xl font-black uppercase text-black tracking-tight">
-              All <span className="text-gray-400 font-light">Collections</span>
+              {(() => {
+                const f = searchParams.get("filter");
+                const s = searchParams.get("sale");
+                const t = searchParams.get("type");
+                const sub = searchParams.get("subCategory");
+                if (f === "new") return <>New <span className="text-gray-400 font-light">Arrivals</span></>;
+                if (s === "true" || f === "sale") return <>Sale &amp; <span className="text-gray-400 font-light">Clearance</span></>;
+                if (sub) return <>{sub} <span className="text-gray-400 font-light">Collection</span></>;
+                if (t === "topwear") return <>Shirts, Tees &amp; <span className="text-gray-400 font-light">Tops</span></>;
+                if (t === "bottomwear") return <>Cargos &amp; <span className="text-gray-400 font-light">Bottomwear</span></>;
+                if (selectedCategories.length === 1) return <>{selectedCategories[0]} <span className="text-gray-400 font-light">Collection</span></>;
+                return <>All <span className="text-gray-400 font-light">Collections</span></>;
+              })()}
             </h1>
             <p className="text-gray-500 text-xs sm:text-sm mt-0.5">
               Showing <strong>{filteredProducts.length}</strong> styles crafted with premium fabrics.

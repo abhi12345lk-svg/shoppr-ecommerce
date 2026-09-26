@@ -82,11 +82,11 @@ const Header = () => {
     "Platform Kicks"
   ];
 
-  /* ================= NAVIGATION ITEMS WITH SNITCH-STYLE EDITORIAL DROPDOWNS ================= */
+  /* ================= NAVIGATION ITEMS WITH REAL WORKING ROUTES & FILTERS ================= */
   const navItems = [
     {
       label: "NEW ARRIVALS",
-      path: "/collection",
+      path: "/collection?filter=new",
       isHighlighted: true,
       hasDropdown: false
     },
@@ -96,16 +96,17 @@ const Header = () => {
       hasDropdown: true,
       preview: {
         title: "Streetwear Drops",
-        subtitle: "Boxy tees, cargos & relaxed jackets",
+        subtitle: "Heavyweight boxy tees, cargos & relaxed layers",
         image:
           "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?auto=format&fit=crop&w=500&q=80",
-        tag: "NEW SEASON"
+        tag: "NEW SEASON",
+        path: "/collection/men?subCategory=Oversized Tees"
       },
       subItems: [
-        { label: "Oversized Tees", path: "/collection/men" },
-        { label: "Linen & Casual Shirts", path: "/collection/men" },
-        { label: "Parachute & Cargos", path: "/collection/men" },
-        { label: "Jackets & Overcoats", path: "/collection/winterwear" },
+        { label: "Oversized Tees", path: "/collection/men?subCategory=Oversized Tees" },
+        { label: "Casual & Resort Shirts", path: "/collection/men?subCategory=Shirts" },
+        { label: "Tactical Cargo Pants", path: "/collection/men?subCategory=Cargo Pants" },
+        { label: "Selvedge Jeans & Trousers", path: "/collection/men?subCategory=Jeans & Trousers" },
         { label: "View All Men", path: "/collection/men", isBold: true }
       ]
     },
@@ -118,52 +119,54 @@ const Header = () => {
         subtitle: "Co-ord sets, contour tops & trousers",
         image:
           "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=500&q=80",
-        tag: "TRENDING NOW"
+        tag: "TRENDING NOW",
+        path: "/collection/women?subCategory=Co-ords"
       },
       subItems: [
-        { label: "Tops & Baby Tees", path: "/collection/women" },
-        { label: "Tailored Co-ords", path: "/collection/women" },
-        { label: "Wide Leg Trousers", path: "/collection/women" },
-        { label: "Dresses & Rompers", path: "/collection/women" },
+        { label: "Tops & Bodysuits", path: "/collection/women?subCategory=Tops & Bodysuits" },
+        { label: "Dresses & Jumpsuits", path: "/collection/women?subCategory=Dresses & Jumpsuits" },
+        { label: "Tailored Co-ords", path: "/collection/women?subCategory=Co-ords" },
+        { label: "Jeans & Trousers", path: "/collection/women?subCategory=Jeans & Trousers" },
         { label: "View All Women", path: "/collection/women", isBold: true }
       ]
     },
     {
       label: "SHIRTS & TEES",
-      path: "/collection",
+      path: "/collection?type=topwear",
       hasDropdown: true,
       preview: {
         title: "Pure European Linen",
-        subtitle: "Breathable vacation & resort fits",
+        subtitle: "Breathable holiday shirts & camp collars",
         image:
           "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80",
-        tag: "BESTSELLERS"
+        tag: "BESTSELLERS",
+        path: "/collection?subCategory=Shirts"
       },
       subItems: [
-        { label: "Oversized T-Shirts", path: "/collection" },
-        { label: "European Linen Shirts", path: "/collection" },
-        { label: "Textured Knit Polos", path: "/collection" },
-        { label: "Heavyweight Graphic Tees", path: "/collection" },
-        { label: "All Tops & Shirts", path: "/collection", isBold: true }
+        { label: "Oversized Graphic Tees", path: "/collection?subCategory=Oversized Tees" },
+        { label: "European Linen Shirts", path: "/collection?subCategory=Shirts" },
+        { label: "Women's Contour Tops", path: "/collection/women?subCategory=Tops & Bodysuits" },
+        { label: "Heavyweight Hoodies", path: "/collection/winterwear?subCategory=Hoodies & Sweats" },
+        { label: "All Shirts & Tops", path: "/collection?type=topwear", isBold: true }
       ]
     },
     {
       label: "CARGOS & BOTTOMS",
-      path: "/collection",
+      path: "/collection?type=bottomwear",
       hasDropdown: true,
       preview: {
         title: "Parachute & Cargos",
         subtitle: "Multi-pocket technical utility",
         image:
           "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=500&q=80",
-        tag: "HOT STYLES"
+        tag: "HOT STYLES",
+        path: "/collection?subCategory=Cargo Pants"
       },
       subItems: [
-        { label: "Parachute Pants", path: "/collection" },
-        { label: "Multi-Pocket Cargos", path: "/collection" },
-        { label: "Relaxed Linen Trousers", path: "/collection" },
-        { label: "Straight Fit Denim", path: "/collection" },
-        { label: "All Bottomwear", path: "/collection", isBold: true }
+        { label: "Parachute & Cargo Pants", path: "/collection?subCategory=Cargo Pants" },
+        { label: "Raw Selvedge Denim", path: "/collection?subCategory=Jeans & Trousers" },
+        { label: "Relaxed Linen Trousers", path: "/collection?subCategory=Jeans & Trousers" },
+        { label: "All Cargos & Bottoms", path: "/collection?type=bottomwear", isBold: true }
       ]
     },
     {
@@ -172,27 +175,39 @@ const Header = () => {
       hasDropdown: true,
       preview: {
         title: "Winter Essentials",
-        subtitle: "Double-breasted overcoats & fleece",
+        subtitle: "Double-breasted overcoats & 450 GSM fleece",
         image:
           "https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=500&q=80",
-        tag: "LIMITED DROP"
+        tag: "LIMITED DROP",
+        path: "/collection/winterwear?subCategory=Trench & Wool Coats"
       },
       subItems: [
-        { label: "Wool Overcoats", path: "/collection/winterwear" },
-        { label: "450 GSM Heavy Hoodies", path: "/collection/winterwear" },
-        { label: "Ribbed Turtlenecks", path: "/collection/winterwear" },
-        { label: "Bomber Jackets", path: "/collection/winterwear" },
+        { label: "450 GSM Heavy Hoodies", path: "/collection/winterwear?subCategory=Hoodies & Sweats" },
+        { label: "Trench & Wool Coats", path: "/collection/winterwear?subCategory=Trench & Wool Coats" },
         { label: "Explore Winter Drop", path: "/collection/winterwear", isBold: true }
       ]
     },
     {
       label: "FOOTWEAR",
       path: "/collection/footwear",
-      hasDropdown: false
+      hasDropdown: true,
+      preview: {
+        title: "Retro Street Kicks",
+        subtitle: "High-density cushioned platforms & leather loafers",
+        image:
+          "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=500&q=80",
+        tag: "RESTOCKED",
+        path: "/collection/footwear?subCategory=Sneakers"
+      },
+      subItems: [
+        { label: "Chunky Platform Sneakers", path: "/collection/footwear?subCategory=Sneakers" },
+        { label: "Burnished Penny Loafers", path: "/collection/footwear?subCategory=Loafers & Formals" },
+        { label: "All Footwear & Kicks", path: "/collection/footwear", isBold: true }
+      ]
     },
     {
       label: "SALE",
-      path: "/collection",
+      path: "/collection?sale=true",
       isSale: true,
       hasDropdown: false
     }
@@ -238,10 +253,14 @@ const Header = () => {
             {/* ================= CENTER: SNITCH-STYLE DESKTOP NAVBAR LINKS ================= */}
             <nav className="hidden xl:flex items-center justify-center gap-6 lg:gap-7 2xl:gap-8 h-full">
               {navItems.map((item, index) => {
-                const isCurrentActive =
-                  item.label === "NEW ARRIVALS"
-                    ? location.pathname === "/" || location.pathname === "/collection"
-                    : location.pathname === item.path;
+                const fullCurrentUrl = `${location.pathname}${location.search}`;
+                const isCurrentActive = item.isSale
+                  ? location.search.includes("sale=true")
+                  : item.label === "NEW ARRIVALS"
+                  ? location.search.includes("filter=new")
+                  : item.path.includes("?")
+                  ? fullCurrentUrl === item.path
+                  : location.pathname === item.path && !location.search;
 
                 return (
                   <div
@@ -256,10 +275,8 @@ const Header = () => {
                         `flex items-center gap-1 text-[13px] tracking-[0.5px] uppercase font-bold transition-colors py-2 ${
                           item.isSale
                             ? "text-[#e53e3e] hover:text-red-700 font-extrabold"
-                            : item.isHighlighted && isCurrentActive
+                            : isCurrentActive
                             ? "text-black relative after:absolute after:bottom-[-22px] after:left-0 after:right-0 after:h-[2px] after:bg-black font-extrabold"
-                            : isActive
-                            ? "text-black font-extrabold"
                             : "text-neutral-800 hover:text-black"
                         }`
                       }
@@ -301,7 +318,7 @@ const Header = () => {
                         {/* Right Column: Visual editorial card (Snitch signature) */}
                         {item.preview && (
                           <Link
-                            to={item.path}
+                            to={item.preview.path || item.path}
                             onClick={() => setActiveDropdown(null)}
                             className="group/card relative rounded-xl overflow-hidden bg-neutral-900 aspect-[4/3] flex flex-col justify-end p-3.5 text-white"
                           >

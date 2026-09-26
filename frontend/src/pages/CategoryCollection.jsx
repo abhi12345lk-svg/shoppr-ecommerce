@@ -1,24 +1,49 @@
+/* ======================= CATEGORYCOLLECTION.JSX ======================= */
+
 import React, { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { FiChevronRight, FiGrid } from "react-icons/fi";
+import { useParams, useSearchParams, Link } from "react-router-dom";
+import { FiChevronRight, FiGrid, FiX } from "react-icons/fi";
 import { ShopContext } from "../Context/ShopContext";
 import Item from "../components/Item";
 
 const CategoryCollection = () => {
   const { products, categories } = useContext(ShopContext);
   const { category } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const subCategoryParam = searchParams.get("subCategory");
 
-  const [selectedSubCategory, setSelectedSubCategory] = useState("all");
+  const [selectedSubCategory, setSelectedSubCategory] = useState(subCategoryParam || "all");
   const [sortType, setSortType] = useState("relevant");
   const [filteredProducts, setFilteredProducts] = useState([]);
+
+  // Sync subcategory param when URL changes
+  useEffect(() => {
+    if (subCategoryParam) {
+      setSelectedSubCategory(subCategoryParam);
+    } else {
+      setSelectedSubCategory("all");
+    }
+  }, [subCategoryParam]);
 
   // Find category details from context
   const currentCategoryObj = categories.find(
     (c) => (c.slug || c.name).toLowerCase() === category?.toLowerCase()
   );
 
-  const subCategories = currentCategoryObj?.subCategories?.map((s) => s.name || s) || [];
+  // Products belonging to this category
+  const categoryProducts = products.filter(
+    (p) => p?.category?.toLowerCase() === category?.toLowerCase()
+  );
 
+  // Dynamically extract all available subcategories from both categories model & actual products
+  const availableSubCategories = [
+    ...new Set([
+      ...(currentCategoryObj?.subCategories?.map((s) => s.name || s) || []),
+      ...categoryProducts.map((p) => p.subCategory).filter(Boolean)
+    ])
+  ];
+
+  // Filtering & Sorting
   useEffect(() => {
     if (category && products?.length > 0) {
       let filtered = products.filter(
@@ -26,9 +51,16 @@ const CategoryCollection = () => {
       );
 
       if (selectedSubCategory !== "all") {
-        filtered = filtered.filter(
-          (item) => item?.subCategory?.toLowerCase() === selectedSubCategory.toLowerCase()
-        );
+        const targetSub = selectedSubCategory.toLowerCase().trim();
+        filtered = filtered.filter((item) => {
+          if (!item.subCategory) return false;
+          const itemSub = item.subCategory.toLowerCase().trim();
+          return (
+            itemSub === targetSub ||
+            itemSub.includes(targetSub) ||
+            targetSub.includes(itemSub)
+          );
+        });
       }
 
       if (sortType === "low-high") {
@@ -43,6 +75,15 @@ const CategoryCollection = () => {
     }
   }, [category, products, selectedSubCategory, sortType]);
 
+  const handleSubCategorySelect = (sub) => {
+    setSelectedSubCategory(sub);
+    if (sub === "all") {
+      setSearchParams({});
+    } else {
+      setSearchParams({ subCategory: sub });
+    }
+  };
+
   return (
     <div className="w-full bg-[#fafafa] min-h-screen pt-4 sm:pt-6 pb-24 overflow-hidden">
       <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24">
@@ -54,6 +95,12 @@ const CategoryCollection = () => {
           <Link to="/collection" className="hover:text-black transition-colors">Catalogue</Link>
           <FiChevronRight size={12} className="text-gray-400" />
           <span className="text-black font-bold uppercase">{category}</span>
+          {selectedSubCategory !== "all" && (
+            <>
+              <FiChevronRight size={12} className="text-gray-400" />
+              <span className="text-black font-semibold">{selectedSubCategory}</span>
+            </>
+          )}
         </nav>
 
         {/* Header Banner */}
@@ -63,7 +110,14 @@ const CategoryCollection = () => {
               Curated Department
             </p>
             <h1 className="font-display text-2xl sm:text-4xl font-black uppercase text-black tracking-tight">
-              {category} <span className="text-gray-400 font-light">Collection</span>
+              {category}{" "}
+              {selectedSubCategory !== "all" ? (
+                <>
+                  <span className="text-gray-400 font-light">— {selectedSubCategory}</span>
+                </>
+              ) : (
+                <span className="text-gray-400 font-light">Collection</span>
+              )}
             </h1>
             <p className="text-gray-500 text-xs sm:text-sm mt-0.5">
               Showing <strong>{filteredProducts.length}</strong> pieces designed for modern daily styling.
@@ -88,10 +142,10 @@ const CategoryCollection = () => {
         </div>
 
         {/* Subcategory Capsules */}
-        {subCategories.length > 0 && (
+        {availableSubCategories.length > 0 && (
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-4 mb-6 border-b border-gray-100">
             <button
-              onClick={() => setSelectedSubCategory("all")}
+              onClick={() => handleSubCategorySelect("all")}
               className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${
                 selectedSubCategory === "all"
                   ? "bg-black text-white shadow-xs"
@@ -100,17 +154,26 @@ const CategoryCollection = () => {
             >
               All {category}
             </button>
-            {subCategories.map((sub, idx) => (
+            {availableSubCategories.map((sub, idx) => (
               <button
                 key={idx}
-                onClick={() => setSelectedSubCategory(sub)}
-                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${
-                  selectedSubCategory === sub
+                onClick={() => handleSubCategorySelect(sub)}
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                  selectedSubCategory.toLowerCase() === sub.toLowerCase()
                     ? "bg-black text-white shadow-xs"
                     : "bg-white text-gray-700 border border-gray-200 hover:border-black"
                 }`}
               >
-                {sub}
+                <span>{sub}</span>
+                {selectedSubCategory.toLowerCase() === sub.toLowerCase() && (
+                  <FiX
+                    size={12}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSubCategorySelect("all");
+                    }}
+                  />
+                )}
               </button>
             ))}
           </div>
@@ -126,13 +189,27 @@ const CategoryCollection = () => {
         ) : (
           <div className="bg-white rounded-3xl p-12 text-center border border-gray-100 max-w-md mx-auto my-12">
             <FiGrid size={32} className="mx-auto text-gray-400 mb-3" />
-            <h3 className="font-display text-2xl font-black text-black">No Products in {category}</h3>
+            <h3 className="font-display text-2xl font-black text-black">
+              No Products Found
+            </h3>
             <p className="text-gray-500 text-xs sm:text-sm mt-2">
-              New season styles for this department are being prepped in our atelier. Check back shortly.
+              {selectedSubCategory !== "all"
+                ? `No items found in "${selectedSubCategory}". Try exploring all ${category} styles.`
+                : `New season styles for this department are being prepped in our atelier.`}
             </p>
-            <Link to="/collection" className="btn-dark mt-5 text-xs">
-              View All Collections
-            </Link>
+            <div className="mt-5 flex items-center justify-center gap-2">
+              {selectedSubCategory !== "all" && (
+                <button
+                  onClick={() => handleSubCategorySelect("all")}
+                  className="px-4 py-2 bg-neutral-100 text-black text-xs font-bold rounded-xl hover:bg-neutral-200"
+                >
+                  View All {category}
+                </button>
+              )}
+              <Link to="/collection" className="btn-dark text-xs">
+                View All Collections
+              </Link>
+            </div>
           </div>
         )}
 
