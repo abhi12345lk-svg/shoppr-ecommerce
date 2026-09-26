@@ -1,23 +1,13 @@
 /* ======================= APP.JSX ======================= */
-
-import React,{
-useContext
-}from 'react'
-
-import{
-Route,
-Routes,
-useLocation
-}from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Route, Routes, useLocation } from 'react-router-dom'
 
 /* ================= COMPONENTS ================= */
-
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Login from './pages/Login'
 
 /* ================= USER PAGES ================= */
-
 import Home from './pages/Home'
 import Collection from './pages/Collection'
 import CategoryCollection from './pages/CategoryCollection'
@@ -27,171 +17,91 @@ import Contact from './pages/Contact'
 import Cart from './pages/Cart'
 import MyOrders from './pages/MyOrders'
 import PlaceOrder from './pages/PlaceOrder'
+import Wishlist from './pages/Wishlist'
+
+/* ================= MODALS & NAV ================= */
+import QuickViewModal from './components/QuickViewModal'
+import SizeGuideModal from './components/SizeGuideModal'
+import MobileBottomNav from './components/MobileBottomNav'
 
 /* ================= CONTEXT ================= */
-
-import{
-ShopContext
-}from './Context/ShopContext'
+import { ShopContext } from './Context/ShopContext'
 
 /* ================= ADMIN ================= */
-
 import Sidebar from './components/admin/Sidebar'
 import AdminLogin from './components/admin/AdminLogin.jsx'
 
+import AdminDashboard from './pages/admin/AdminDashboard'
 import AddProduct from './pages/admin/AddProduct'
 import ProductList from './pages/admin/ProductList'
+import CategoryManager from './pages/admin/CategoryManager'
+import CouponManager from './pages/admin/CouponManager'
 import Orders from './pages/admin/Orders'
 import ContactMessages from './pages/admin/ContactMessages'
 
-const App=()=>{
+const App = () => {
+  const { showUserLogin, isAdmin } = useContext(ShopContext)
+  const location = useLocation()
+  const isAdminPath = location.pathname.includes('/admin')
 
-const{
-showUserLogin,
-isAdmin
-}=useContext(ShopContext)
+  return (
+    <main className='overflow-hidden text-tertiary min-h-screen bg-[#fafafa] flex flex-col justify-between'>
 
-const location=useLocation()
+      {/* ================= LOGIN POPUP ================= */}
+      {showUserLogin && <Login />}
 
-const isAdminPath=
-location.pathname.includes('/admin')
+      {/* ================= GLOBAL MODALS ================= */}
+      <QuickViewModal />
+      <SizeGuideModal />
 
-return(
+      {/* ================= HEADER ================= */}
+      {!isAdminPath && <Header />}
 
-<main className='overflow-hidden text-tertiary min-h-screen bg-[#f5f5f5]'>
+      {/* ================= ROUTES ================= */}
+      <div className="flex-1 w-full">
+        <Routes>
 
-{/* ================= LOGIN POPUP ================= */}
+          {/* ================= USER ROUTES ================= */}
+          <Route path='/' element={<Home />} />
+          <Route path='/collection' element={<Collection />} />
+          <Route path='/collection/:category' element={<CategoryCollection />} />
+          <Route path='/collection/:category/:id' element={<ProductDetails />} />
+          <Route path='/testimonials' element={<Testimonials />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/wishlist' element={<Wishlist />} />
+          <Route path='/place-order' element={<PlaceOrder />} />
+          <Route path='/my-orders' element={<MyOrders />} />
 
-{
+          {/* ================= ADMIN LOGIN ================= */}
+          <Route path='/admin' element={<AdminLogin />} />
 
-showUserLogin
-&&
-<Login/>
+          {/* ================= PROTECTED ADMIN ================= */}
+          <Route
+            path='/admin/*'
+            element={isAdmin ? <Sidebar /> : <AdminLogin />}
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path='dashboard' element={<AdminDashboard />} />
+            <Route path='add' element={<AddProduct />} />
+            <Route path='list' element={<ProductList />} />
+            <Route path='categories' element={<CategoryManager />} />
+            <Route path='coupons' element={<CouponManager />} />
+            <Route path='orders' element={<Orders />} />
+            <Route path='contact-messages' element={<ContactMessages />} />
+          </Route>
 
-}
+        </Routes>
+      </div>
 
-{/* ================= HEADER ================= */}
+      {/* ================= FOOTER ================= */}
+      {!isAdminPath && <Footer />}
 
-{
+      {/* ================= MOBILE BOTTOM NAV ================= */}
+      {!isAdminPath && <MobileBottomNav />}
 
-!isAdminPath
-&&
-<Header/>
-
-}
-
-{/* ================= ROUTES ================= */}
-
-<Routes>
-
-{/* ================= USER ROUTES ================= */}
-
-<Route
-path='/'
-element={<Home/>}
-/>
-
-<Route
-path='/collection'
-element={<Collection/>}
-/>
-
-<Route
-path='/collection/:category'
-element={<CategoryCollection/>}
-/>
-
-<Route
-path='/collection/:category/:id'
-element={<ProductDetails/>}
-/>
-
-<Route
-path='/testimonials'
-element={<Testimonials/>}
-/>
-
-<Route
-path='/contact'
-element={<Contact/>}
-/>
-
-<Route
-path='/cart'
-element={<Cart/>}
-/>
-
-<Route
-path='/place-order'
-element={<PlaceOrder/>}
-/>
-
-<Route
-path='/my-orders'
-element={<MyOrders/>}
-/>
-
-{/* ================= ADMIN LOGIN ================= */}
-
-<Route
-path='/admin'
-element={<AdminLogin/>}
-/>
-
-{/* ================= PROTECTED ADMIN ================= */}
-
-<Route
-
-path='/admin/*'
-
-element={
-
-isAdmin
-?<Sidebar/>
-:<AdminLogin/>
-
-}
-
->
-
-<Route
-path='add'
-element={<AddProduct/>}
-/>
-
-<Route
-path='list'
-element={<ProductList/>}
-/>
-
-<Route
-path='orders'
-element={<Orders/>}
-/>
-
-<Route
-path='contact-messages'
-element={<ContactMessages/>}
-/>
-
-</Route>
-
-</Routes>
-
-{/* ================= FOOTER ================= */}
-
-{
-
-!isAdminPath
-&&
-<Footer/>
-
-}
-
-</main>
-
-)
-
+    </main>
+  )
 }
 
 export default App

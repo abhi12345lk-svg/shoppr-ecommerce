@@ -6,9 +6,7 @@ const storage = multer.diskStorage({});
 
 // ================= MULTER UPLOAD =================
 
-const upload = multer({
-    storage
-});
+const upload = multer({ storage });
 
 // ================= EXPORT =================
 

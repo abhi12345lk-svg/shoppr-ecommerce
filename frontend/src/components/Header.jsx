@@ -1,569 +1,533 @@
-/* ======================= HEADER.JSX ======================= */
-
-import React,{
-useContext,
-useEffect,
-useState
-}from 'react'
-
-import{
-NavLink,
-useLocation
-}from 'react-router-dom'
-
-import{
-FaSearch,
-FaShoppingBag,
-FaBars,
-FaTimes
-}from 'react-icons/fa'
-
-import{
-FiUser
-}from 'react-icons/fi'
-
-import{
-ShopContext
-}from '../Context/ShopContext'
-
-const Header=()=>{
-
-const location=useLocation()
-
-const isCollectionPage=
-location.pathname.includes('/collection')
-
-const{
-
-navigate,
-user,
-logout,
-setShowUserLogin,
-getCartCount,
-searchQuery,
-setSearchQuery
-
-}=useContext(ShopContext)
-
-const[
-menuOpen,
-setMenuOpen
-]=useState(false)
-
-const[
-showSearch,
-setShowSearch
-]=useState(false)
-
-const[
-showProfile,
-setShowProfile
-]=useState(false)
-
-const[
-scrolled,
-setScrolled
-]=useState(false)
-
-/* ================= SCROLL EFFECT ================= */
-
-useEffect(()=>{
-
-const handleScroll=()=>{
-
-setScrolled(window.scrollY>20)
-
-}
-
-window.addEventListener('scroll',handleScroll)
-
-return()=>window.removeEventListener(
-'scroll',
-handleScroll
-)
-
-},[])
-
-/* ================= SEARCH NAVIGATION ================= */
-
-useEffect(()=>{
-
-if(
-searchQuery.trim().length>0
-&&!isCollectionPage
-){
-
-navigate('/collection')
-
-}
-
-},[searchQuery])
-
-/* ================= NAV LINKS ================= */
-
-const navLinks=[
-
-{
-path:'/',
-label:'HOME'
-},
-
-{
-path:'/collection',
-label:'COLLECTION'
-},
-
-{
-path:'/testimonials',
-label:'REVIEWS'
-},
-
-{
-path:'/contact',
-label:'CONTACT'
-}
-
-]
-
-return(
-
-<header
-
-className={`sticky top-0 z-50 w-full transition-all duration-500
-${scrolled
-?'bg-white/80 backdrop-blur-2xl border-b border-gray-200 shadow-sm'
-:'bg-[#f8f8f8]'
-}`}
-
->
-
-<div
-className='max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24'
->
-
-{/* ================= NAVBAR ================= */}
-
-<div className='h-[78px] sm:h-[88px] flex items-center justify-between gap-4'>
-
-{/* ================= LOGO ================= */}
-
-<div className='flex items-center shrink-0'>
-
-<h1
-
-onClick={()=>navigate('/')}
-
-className='text-[26px] sm:text-[32px] xl:text-[42px] font-black cursor-pointer tracking-[-2px] leading-none select-none hover:scale-[1.02] transition-all duration-300'
-
->
-
-SHOPPR.
-
-</h1>
-
-</div>
-
-{/* ================= CENTER NAV ================= */}
-
-<ul
-className='hidden xl:flex items-center justify-center gap-10 2xl:gap-16 font-semibold text-[15px] tracking-[2px]'
->
-
-{
-
-navLinks.map((item,index)=>(
-
-<NavLink
-
-key={index}
-
-to={item.path}
-
-className={({isActive})=>
-
-`relative py-2 uppercase transition-all duration-500
-${isActive
-?'text-black'
-:'text-gray-500 hover:text-black'
-}`
-
-}
-
->
-
-{item.label}
-
-<span
-
-className={`absolute left-0 bottom-0 h-[2px] bg-black rounded-full transition-all duration-500
-${location.pathname===item.path
-?'w-full'
-:'w-0'
-}`}
-
-/>
-
-</NavLink>
-
-))
-
-}
-
-</ul>
-
-{/* ================= RIGHT ================= */}
-
-<div className='flex items-center justify-end gap-2 sm:gap-4 shrink-0'>
-
-{/* ================= SEARCH ================= */}
-
-<div className='hidden md:flex items-center relative'>
-
-<div
-
-className={`flex items-center overflow-hidden rounded-full bg-white border border-gray-200 shadow-sm transition-all duration-500
-${showSearch
-?'w-[220px] lg:w-[300px] xl:w-[380px] 2xl:w-[480px] px-4 lg:px-6'
-:'w-0 px-0 border-0 shadow-none'
-}`}
-
->
-
-<input
-
-type='text'
-
-value={searchQuery}
-
-onChange={(e)=>
-
-setSearchQuery(e.target.value)
-
-}
-
-placeholder='Search premium products...'
-
-className='w-full h-12 bg-transparent outline-none text-[14px] lg:text-[15px] font-medium tracking-[0.5px]'
-
-/>
-
-</div>
-
-<button
-
-onClick={()=>setShowSearch(!showSearch)}
-
-className='h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-black text-white flex items-center justify-center hover:scale-105 hover:bg-[#111] transition-all duration-300 shadow-lg'
-
->
-
-<FaSearch size={14}/>
-
-</button>
-
-</div>
-
-{/* ================= CART ================= */}
-
-<button
-
-onClick={()=>navigate('/cart')}
-
-className='relative h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-black text-white flex items-center justify-center hover:scale-105 hover:bg-[#111] transition-all duration-300 shadow-lg'
-
->
-
-<FaShoppingBag size={15}/>
-
-{
-
-getCartCount()>0&&(
-
-<span
-className='absolute -top-1 -right-1 min-w-[20px] h-[20px] rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold px-1'
-
->
-
-{getCartCount()}
-
-</span>
-
-)
-
-}
-
-</button>
-
-{/* ================= USER ================= */}
-
-{
-
-user
-
-?(
-
-<div className='relative'>
-
-<button
-
-onClick={()=>setShowProfile(!showProfile)}
-
-className='h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-100 transition-all duration-300 shadow-sm'
-
->
-
-<FiUser size={18}/>
-
-</button>
-
-{/* ================= PROFILE DROPDOWN ================= */}
-
-{
-
-showProfile&&(
-
-<div
-className='absolute right-0 top-14 sm:top-16 w-[260px] sm:w-[290px] bg-white border border-gray-200 rounded-[28px] overflow-hidden shadow-2xl'
->
-
-<div className='px-5 sm:px-7 py-5 sm:py-6 border-b border-gray-100 bg-[#fafafa]'>
-
-<h4 className='font-bold text-black text-base sm:text-lg'>
-
-{user.name}
-
-</h4>
-
-<p className='text-sm text-gray-500 truncate mt-2'>
-
-{user.email}
-
-</p>
-
-</div>
-
-<div className='p-3 sm:p-4 flex flex-col gap-3'>
-
-<button
-
-onClick={()=>{
-
-navigate('/my-orders')
-setShowProfile(false)
-
-}}
-
-className='w-full text-left px-4 sm:px-5 py-3 sm:py-4 rounded-2xl hover:bg-[#f5f5f5] text-[14px] sm:text-[15px] font-medium transition-all duration-300'
-
->
-
-My Orders
-
-</button>
-
-<button
-
-onClick={logout}
-
-className='w-full text-left px-4 sm:px-5 py-3 sm:py-4 rounded-2xl hover:bg-red-50 text-red-500 text-[14px] sm:text-[15px] font-medium transition-all duration-300'
-
->
-
-Logout
-
-</button>
-
-</div>
-
-</div>
-
-)
-
-}
-
-</div>
-
-)
-
-:(
-
-<button
-
-onClick={()=>setShowUserLogin(true)}
-
-className='hidden sm:flex items-center justify-center px-5 lg:px-7 h-10 lg:h-12 rounded-full bg-black text-white text-xs lg:text-sm font-semibold hover:bg-[#111] hover:scale-105 transition-all duration-300 shadow-lg tracking-[1px]'
-
->
-
-LOGIN
-
-</button>
-
-)
-
-}
-
-{/* ================= MOBILE MENU ================= */}
-
-<button
-
-onClick={()=>setMenuOpen(true)}
-
-className='xl:hidden h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-black text-white flex items-center justify-center shadow-lg'
-
->
-
-<FaBars size={16}/>
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-{/* ================= MOBILE SIDEBAR ================= */}
-
-{
-
-menuOpen&&(
-
-<div className='fixed inset-0 z-[999] bg-black/50 backdrop-blur-sm xl:hidden'>
-
-<div className='absolute right-0 top-0 h-full w-[88%] max-w-[420px] bg-white p-5 sm:p-7 flex flex-col overflow-y-auto'>
-
-{/* TOP */}
-
-<div className='flex items-center justify-between mb-10'>
-
-<h2 className='text-2xl sm:text-3xl font-black tracking-tight'>
-
-MENU
-
-</h2>
-
-<button
-
-onClick={()=>setMenuOpen(false)}
-
-className='h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-black text-white flex items-center justify-center'
-
->
-
-<FaTimes/>
-
-</button>
-
-</div>
-
-{/* SEARCH */}
-
-<div className='flex items-center bg-[#f5f5f5] rounded-full px-5 h-12 sm:h-14 mb-8 sm:mb-10 border border-gray-200'>
-
-<input
-
-type='text'
-
-value={searchQuery}
-
-onChange={(e)=>
-
-setSearchQuery(e.target.value)
-
-}
-
-placeholder='Search products...'
-
-className='w-full bg-transparent outline-none text-[14px] sm:text-[15px]'
-
-/>
-
-<FaSearch className='text-gray-500'/>
-
-</div>
-
-{/* NAV */}
-
-<div className='flex flex-col gap-3'>
-
-{
-
-navLinks.map((item,index)=>(
-
-<NavLink
-
-key={index}
-
-to={item.path}
-
-onClick={()=>setMenuOpen(false)}
-
-className={({isActive})=>
-
-`px-5 py-4 rounded-2xl text-[14px] sm:text-[15px] font-bold tracking-wide transition-all duration-300
-${isActive
-?'bg-black text-white'
-:'bg-[#f5f5f5] text-gray-700 hover:bg-black hover:text-white'
-}`
-
-}
-
->
-
-{item.label}
-
-</NavLink>
-
-))
-
-}
-
-</div>
-
-{/* BOTTOM */}
-
-<div className='mt-auto pt-10'>
-
-{
-
-!user&&(
-
-<button
-
-onClick={()=>{
-
-setShowUserLogin(true)
-setMenuOpen(false)
-
-}}
-
-className='w-full h-12 sm:h-14 rounded-2xl bg-black text-white font-semibold shadow-xl text-sm sm:text-base'
-
->
-
-Login To Continue
-
-</button>
-
-)
-
-}
-
-</div>
-
-</div>
-
-</div>
-
-)
-
-}
-
-</header>
-
-)
-
-}
-
-export default Header
+/* ======================= HEADER.JSX (EDITORIAL MINIMALIST) ======================= */
+
+import React, { useContext, useEffect, useState, useRef } from "react";
+import { NavLink, Link, useLocation } from "react-router-dom";
+import {
+  FiSearch,
+  FiShoppingBag,
+  FiHeart,
+  FiUser,
+  FiPackage,
+  FiLogOut,
+  FiMenu,
+  FiX,
+  FiChevronDown,
+  FiArrowRight
+} from "react-icons/fi";
+import { ShopContext } from "../Context/ShopContext";
+
+const Header = () => {
+  const location = useLocation();
+
+  const {
+    navigate,
+    user,
+    logout,
+    setShowUserLogin,
+    getCartCount,
+    getWishlistCount,
+    searchQuery,
+    setSearchQuery,
+    products,
+    formatPrice
+  } = useContext(ShopContext);
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
+  const searchInputRef = useRef(null);
+
+  /* ================= SCROLL EFFECT ================= */
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  /* ================= FOCUS ON SEARCH ================= */
+  useEffect(() => {
+    if (showSearchModal && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [showSearchModal]);
+
+  /* ================= LIVE SEARCH MATCHES ================= */
+  const searchMatches = searchQuery.trim().length > 1
+    ? products
+        .filter((p) =>
+          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (p.subCategory && p.subCategory.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (p.tags && p.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())))
+        )
+        .slice(0, 5)
+    : [];
+
+  const popularSearches = [
+    "Winter Essentials",
+    "Overcoats",
+    "Oversized Tees",
+    "Linen Shirts",
+    "Parachute Pants",
+    "Platform Kicks"
+  ];
+
+  /* ================= MAIN NAVIGATION LINKS ================= */
+  const navItems = [
+    {
+      label: "NEW ARRIVALS",
+      path: "/collection",
+      isHighlighted: true,
+      hasDropdown: false
+    },
+    {
+      label: "MEN",
+      path: "/collection/men",
+      hasDropdown: true,
+      subItems: [
+        { label: "Oversized Tees", path: "/collection/men" },
+        { label: "Linen & Casual Shirts", path: "/collection/men" },
+        { label: "Parachute & Cargos", path: "/collection/men" },
+        { label: "Jackets & Overcoats", path: "/collection/winterwear" },
+        { label: "View All Men", path: "/collection/men", isBold: true }
+      ]
+    },
+    {
+      label: "WOMEN",
+      path: "/collection/women",
+      hasDropdown: true,
+      subItems: [
+        { label: "Tops & Baby Tees", path: "/collection/women" },
+        { label: "Tailored Co-ords", path: "/collection/women" },
+        { label: "Wide Leg Trousers", path: "/collection/women" },
+        { label: "Dresses & Rompers", path: "/collection/women" },
+        { label: "View All Women", path: "/collection/women", isBold: true }
+      ]
+    },
+    {
+      label: "TOPWEAR",
+      path: "/collection",
+      hasDropdown: true,
+      subItems: [
+        { label: "Oversized T-Shirts", path: "/collection" },
+        { label: "European Linen Shirts", path: "/collection" },
+        { label: "Hoodies & Sweatshirts", path: "/collection/winterwear" },
+        { label: "Wool Overcoats", path: "/collection/winterwear" },
+        { label: "All Topwear", path: "/collection", isBold: true }
+      ]
+    },
+    {
+      label: "BOTTOMWEAR",
+      path: "/collection",
+      hasDropdown: true,
+      subItems: [
+        { label: "Parachute Pants", path: "/collection" },
+        { label: "Multi-Pocket Cargos", path: "/collection" },
+        { label: "Relaxed Linen Trousers", path: "/collection" },
+        { label: "Selvedge Denim Jeans", path: "/collection" },
+        { label: "All Bottomwear", path: "/collection", isBold: true }
+      ]
+    },
+    {
+      label: "WINTER WEAR",
+      path: "/collection/winterwear",
+      hasDropdown: true,
+      subItems: [
+        { label: "Double-Breasted Overcoats", path: "/collection/winterwear" },
+        { label: "450 GSM Heavy Hoodies", path: "/collection/winterwear" },
+        { label: "Ribbed Turtlenecks", path: "/collection/winterwear" },
+        { label: "Bomber Jackets", path: "/collection/winterwear" },
+        { label: "Explore Winter Drop", path: "/collection/winterwear", isBold: true }
+      ]
+    },
+    {
+      label: "ACCESSORIES",
+      path: "/collection/footwear",
+      hasDropdown: true,
+      subItems: [
+        { label: "Chunky Platform Sneakers", path: "/collection/footwear" },
+        { label: "Leather Chelsea Boots", path: "/collection/footwear" },
+        { label: "Caps & Beanies", path: "/collection" },
+        { label: "Crossbody Bags", path: "/collection" },
+        { label: "All Accessories", path: "/collection/footwear", isBold: true }
+      ]
+    },
+    {
+      label: "SALE",
+      path: "/collection",
+      isSale: true,
+      hasDropdown: false
+    }
+  ];
+
+  return (
+    <>
+      <header
+        className={`sticky top-0 z-40 w-full bg-white transition-all duration-200 border-b border-gray-200/80 ${
+          scrolled ? "shadow-sm" : ""
+        }`}
+      >
+        <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-14">
+          <div className="h-[68px] sm:h-[72px] flex items-center justify-between gap-4">
+
+            {/* ================= LEFT: LOGO & MOBILE HAMBURGER ================= */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setMenuOpen(true)}
+                aria-label="Open mobile menu"
+                className="xl:hidden p-2 text-black hover:text-gray-600 transition-colors"
+              >
+                <FiMenu size={22} />
+              </button>
+
+              <Link
+                to="/"
+                className="flex items-center select-none tracking-tight group"
+              >
+                <span className="font-display text-[26px] sm:text-[30px] font-black uppercase text-black tracking-[-0.5px]">
+                  SHOPPR
+                </span>
+                <span className="text-[26px] sm:text-[30px] font-black text-black leading-none ml-0.5">
+                  •
+                </span>
+              </Link>
+            </div>
+
+            {/* ================= CENTER: EXACT NAVBAR LINKS ================= */}
+            <nav className="hidden xl:flex items-center justify-center gap-6 lg:gap-7 2xl:gap-8 h-full">
+              {navItems.map((item, index) => {
+                const isCurrentActive =
+                  item.label === "NEW ARRIVALS"
+                    ? location.pathname === "/" || location.pathname === "/collection"
+                    : location.pathname === item.path;
+
+                return (
+                  <div
+                    key={index}
+                    className="relative h-full flex items-center group"
+                    onMouseEnter={() => item.hasDropdown && setActiveDropdown(item.label)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                  >
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) =>
+                        `flex items-center gap-1 text-[13px] tracking-[0.5px] uppercase font-bold transition-colors py-2 ${
+                          item.isSale
+                            ? "text-[#e53e3e] hover:text-red-700 font-extrabold"
+                            : item.isHighlighted && isCurrentActive
+                            ? "text-black relative after:absolute after:bottom-[-20px] after:left-0 after:right-0 after:h-[2px] after:bg-black font-extrabold"
+                            : isActive
+                            ? "text-black font-extrabold"
+                            : "text-neutral-800 hover:text-black"
+                        }`
+                      }
+                    >
+                      <span>{item.label}</span>
+                      {item.hasDropdown && (
+                        <FiChevronDown
+                          size={13}
+                          className="text-neutral-500 group-hover:rotate-180 transition-transform duration-200 stroke-[2.5]"
+                        />
+                      )}
+                    </NavLink>
+
+                    {/* DROPDOWN MENU */}
+                    {item.hasDropdown && activeDropdown === item.label && (
+                      <div className="absolute top-[68px] left-0 min-w-[220px] bg-white border border-gray-100 shadow-xl rounded-xl py-3 px-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                        <div className="flex flex-col gap-1">
+                          {item.subItems?.map((sub, sIdx) => (
+                            <Link
+                              key={sIdx}
+                              to={sub.path}
+                              onClick={() => setActiveDropdown(null)}
+                              className={`px-3 py-2 text-xs uppercase rounded-lg transition-colors flex items-center justify-between ${
+                                sub.isBold
+                                  ? "font-black text-black bg-neutral-50 hover:bg-neutral-100 mt-1 border-t border-gray-100 pt-2"
+                                  : "font-semibold text-neutral-600 hover:text-black hover:bg-neutral-50"
+                              }`}
+                            >
+                              <span>{sub.label}</span>
+                              {sub.isBold && <FiArrowRight size={12} />}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
+
+            {/* ================= RIGHT: SEARCH, USER, BAG ICONS ================= */}
+            <div className="flex items-center justify-end gap-4 sm:gap-6 text-black">
+
+              {/* SEARCH ICON */}
+              <button
+                onClick={() => setShowSearchModal(true)}
+                aria-label="Search clothing"
+                className="p-1.5 hover:opacity-70 transition-opacity"
+              >
+                <FiSearch size={21} className="stroke-[1.8]" />
+              </button>
+
+              {/* USER PROFILE ICON */}
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowProfile(!showProfile)}
+                    aria-label="User Account"
+                    className="p-1.5 hover:opacity-70 transition-opacity flex items-center"
+                  >
+                    <FiUser size={21} className="stroke-[1.8]" />
+                  </button>
+
+                  {/* Profile Dropdown */}
+                  {showProfile && (
+                    <div className="absolute right-0 top-11 w-[260px] bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+                      <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/70">
+                        <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Signed in as</p>
+                        <h4 className="font-bold text-black text-sm mt-0.5 truncate">{user.name}</h4>
+                        <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                      </div>
+
+                      <div className="p-2 flex flex-col gap-1">
+                        <button
+                          onClick={() => {
+                            navigate("/my-orders");
+                            setShowProfile(false);
+                          }}
+                          className="w-full flex items-center gap-2.5 text-left px-3.5 py-2.5 rounded-xl hover:bg-gray-50 text-[13px] font-semibold text-gray-700 transition-all"
+                        >
+                          <FiPackage size={15} />
+                          My Orders & Tracking
+                        </button>
+                        <button
+                          onClick={() => {
+                            navigate("/wishlist");
+                            setShowProfile(false);
+                          }}
+                          className="w-full flex items-center gap-2.5 text-left px-3.5 py-2.5 rounded-xl hover:bg-gray-50 text-[13px] font-semibold text-gray-700 transition-all"
+                        >
+                          <FiHeart size={15} />
+                          Wishlist ({getWishlistCount()})
+                        </button>
+                        <button
+                          onClick={() => {
+                            logout();
+                            setShowProfile(false);
+                          }}
+                          className="w-full flex items-center gap-2.5 text-left px-3.5 py-2.5 rounded-xl hover:bg-rose-50 text-rose-600 text-[13px] font-semibold transition-all"
+                        >
+                          <FiLogOut size={15} />
+                          Logout
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowUserLogin(true)}
+                  aria-label="Login / Sign Up"
+                  className="p-1.5 hover:opacity-70 transition-opacity"
+                >
+                  <FiUser size={21} className="stroke-[1.8]" />
+                </button>
+              )}
+
+              {/* SHOPPING BAG ICON WITH NUMERIC BADGE */}
+              <button
+                onClick={() => navigate("/cart")}
+                aria-label="Shopping Bag"
+                className="relative p-1.5 hover:opacity-70 transition-opacity"
+              >
+                <FiShoppingBag size={21} className="stroke-[1.8]" />
+                {getCartCount() > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full bg-black text-white text-[10px] flex items-center justify-center font-bold px-1">
+                    {getCartCount()}
+                  </span>
+                )}
+              </button>
+
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+      {/* ================= SEARCH MODAL ================= */}
+      {showSearchModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 px-4 animate-in fade-in duration-200"
+          onClick={() => setShowSearchModal(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100"
+          >
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <h3 className="font-display font-black text-lg uppercase tracking-tight text-black">
+                Search SHOPPR Drops
+              </h3>
+              <button
+                onClick={() => setShowSearchModal(false)}
+                aria-label="Close search"
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-black hover:text-white flex items-center justify-center transition-colors text-gray-500"
+              >
+                <FiX size={16} />
+              </button>
+            </div>
+
+            <div className="relative mt-4">
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search winter coats, hoodies, linen shirts, cargos..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && searchQuery.trim()) {
+                    setShowSearchModal(false);
+                    navigate("/collection");
+                  }
+                }}
+                className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:border-black transition-colors"
+              />
+            </div>
+
+            {/* Popular Searches */}
+            <div className="mt-5">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                Popular Drops
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {popularSearches.map((term, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setSearchQuery(term);
+                      setShowSearchModal(false);
+                      navigate("/collection");
+                    }}
+                    className="px-3.5 py-1.5 rounded-full bg-gray-100 hover:bg-black hover:text-white text-xs font-semibold text-gray-700 transition-colors"
+                  >
+                    {term}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Live Search Results */}
+            {searchMatches.length > 0 && (
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-3">
+                  Matching Drops ({searchMatches.length})
+                </p>
+                <div className="space-y-2">
+                  {searchMatches.map((prod) => (
+                    <div
+                      key={prod._id}
+                      onClick={() => {
+                        setShowSearchModal(false);
+                        navigate(`/collection/${prod.category?.toLowerCase()}/${prod._id}`);
+                      }}
+                      className="flex items-center justify-between p-2 rounded-xl hover:bg-neutral-50 cursor-pointer transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={prod.image?.[0]}
+                          alt={prod.name}
+                          className="w-10 h-12 object-contain rounded bg-neutral-100 p-0.5"
+                        />
+                        <div>
+                          <p className="text-xs font-bold text-black uppercase">{prod.name}</p>
+                          <p className="text-[11px] text-gray-400">{prod.brand || "SHOPPR"} • {prod.category}</p>
+                        </div>
+                      </div>
+                      <span className="text-xs font-bold text-black">{formatPrice(prod.offerPrice)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ================= MOBILE DRAWER ================= */}
+      <div
+        className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-xs transition-opacity duration-300 xl:hidden ${
+          menuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+        }`}
+        onClick={() => setMenuOpen(false)}
+      >
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className={`w-[85%] max-w-[320px] h-full bg-white flex flex-col justify-between p-6 shadow-2xl transition-transform duration-300 ${
+            menuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div>
+            <div className="flex items-center justify-between pb-6 border-b border-gray-100">
+              <Link to="/" onClick={() => setMenuOpen(false)} className="flex items-center">
+                <span className="font-display text-2xl font-black uppercase text-black">
+                  SHOPPR
+                </span>
+                <span className="text-2xl font-black text-black ml-0.5">•</span>
+              </Link>
+              <button
+                onClick={() => setMenuOpen(false)}
+                aria-label="Close menu"
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600"
+              >
+                <FiX size={16} />
+              </button>
+            </div>
+
+            {/* Mobile Nav Links */}
+            <div className="flex flex-col gap-2 mt-6">
+              {navItems.map((item, idx) => (
+                <NavLink
+                  key={idx}
+                  to={item.path}
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-between transition-colors ${
+                      item.isSale
+                        ? "text-[#e53e3e] bg-red-50/50"
+                        : isActive
+                        ? "bg-black text-white"
+                        : "text-gray-800 hover:bg-gray-100"
+                    }`
+                  }
+                >
+                  <span>{item.label}</span>
+                  <FiArrowRight size={14} />
+                </NavLink>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-6 border-t border-gray-100 flex flex-col gap-2 text-xs font-semibold text-gray-500">
+            <Link to="/wishlist" onClick={() => setMenuOpen(false)} className="py-2 hover:text-black">
+              Wishlist ({getWishlistCount()})
+            </Link>
+            <Link to="/my-orders" onClick={() => setMenuOpen(false)} className="py-2 hover:text-black">
+              Track Orders
+            </Link>
+            <Link to="/contact" onClick={() => setMenuOpen(false)} className="py-2 hover:text-black">
+              Support &amp; Returns
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Header;

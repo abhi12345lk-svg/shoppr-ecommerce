@@ -1,284 +1,190 @@
-/* ======================= HERO.JSX ======================= */
+/* ======================= HERO.JSX — FULL-SCREEN MOBILE + EDITORIAL DESKTOP ======================= */
 
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
+import { FiArrowRight } from "react-icons/fi";
 
-import {Link} from 'react-router-dom'
+const Hero = () => {
+  return (
+    <section className="relative w-full overflow-hidden bg-[#0d0d0d] text-white">
 
-import bgImg from '../assets/bg2.jpg'
+      {/* ============================================================
+          MOBILE HERO  (< md)  — Full viewport height, portrait style
+          Model fills the screen, text pinned to bottom overlay
+          ============================================================ */}
+      <div
+        className="md:hidden relative w-full flex flex-col justify-end"
+        style={{ height: "100svh", minHeight: "580px", maxHeight: "900px" }}
+      >
+        {/* Full-bleed portrait image */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            backgroundImage: "url('/winter_hero_banner.jpg')",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            /* Shift RIGHT so the model's face/chest fills the mobile portrait frame */
+            backgroundPosition: "82% 8%",
+          }}
+        />
 
-const Hero=()=>{
+        {/* Dark gradient from bottom — keeps text readable */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.72) 35%, rgba(0,0,0,0.28) 65%, rgba(0,0,0,0.08) 100%)",
+          }}
+        />
 
-return(
+        {/* Content — pinned to bottom */}
+        <div className="relative z-10 px-5 pb-8 pt-32 animate-fadeIn">
 
-<section
+          {/* Eyebrow */}
+          <div className="flex items-center gap-2.5 mb-3">
+            <span className="text-[10px] font-bold uppercase tracking-[4px] text-white/70">
+              NEW SEASON
+            </span>
+            <span className="w-8 h-px bg-white/40" />
+          </div>
 
-className='
-relative
-w-full
-min-h-[90vh]
-sm:min-h-screen
-bg-cover
-bg-center
-bg-no-repeat
-flex
-items-center
-overflow-hidden
-'
+          {/* Headline */}
+          <h1
+            className="font-display font-black uppercase text-white leading-[0.88] tracking-tight mb-3"
+            style={{ fontSize: "clamp(52px, 14vw, 72px)" }}
+          >
+            WINTER
+            <br />
+            ESSENTIALS
+          </h1>
 
-style={{
+          {/* Tagline */}
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/75 mb-2">
+            Stay Warm. Stay Stylish.
+          </p>
 
-backgroundImage:`url(${bgImg})`
+          {/* Short body */}
+          <p className="text-[13px] text-white/60 leading-relaxed mb-6 max-w-xs">
+            Jackets, hoodies &amp; sweaters — only at{" "}
+            <span className="font-black text-white">SHOPPR.</span>
+          </p>
 
-}}
+          {/* CTAs stacked for thumb-friendly tap */}
+          <div className="flex flex-col gap-2.5">
+            <Link
+              to="/collection/winterwear"
+              className="flex items-center justify-center gap-2 bg-white text-black font-extrabold uppercase text-[11px] tracking-[0.15em] py-4 w-full active:scale-95 transition-all rounded-sm"
+            >
+              <span>SHOP COLLECTION</span>
+              <FiArrowRight size={14} />
+            </Link>
+            <Link
+              to="/collection"
+              className="flex items-center justify-center gap-2 border border-white/40 text-white font-extrabold uppercase text-[11px] tracking-[0.15em] py-4 w-full active:scale-95 transition-all bg-transparent rounded-sm hover:bg-white/10"
+            >
+              <span>NEW ARRIVALS</span>
+              <FiArrowRight size={14} />
+            </Link>
+          </div>
 
->
+          {/* Scroll hint dot */}
+          <div className="flex justify-center mt-5 gap-1.5">
+            <span className="w-5 h-1 rounded-full bg-white opacity-90" />
+            <span className="w-1 h-1 rounded-full bg-white/40" />
+            <span className="w-1 h-1 rounded-full bg-white/40" />
+          </div>
+        </div>
+      </div>
 
-{/* ================= OVERLAY ================= */}
+      {/* ============================================================
+          DESKTOP HERO  (md+) — Left text, right model, landscape
+          ============================================================ */}
+      <div
+        className="hidden md:flex items-center relative w-full"
+        style={{ minHeight: "clamp(480px, 55vw, 680px)" }}
+      >
+        {/* Background */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            backgroundImage: "url('/winter_hero_banner.jpg')",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "70% 12%",
+          }}
+        />
 
-<div
-className='
-absolute
-inset-0
-bg-black/20
-'
-/>
+        {/* Desktop gradient — darken only left side */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(0,0,0,0.93) 0%, rgba(0,0,0,0.70) 30%, rgba(0,0,0,0.32) 58%, rgba(0,0,0,0.04) 100%)",
+          }}
+        />
 
-{/* ================= CONTENT ================= */}
+        {/* Content */}
+        <div className="relative z-10 w-full max-w-[1900px] mx-auto px-10 lg:px-16 xl:px-20 2xl:px-28 py-16 lg:py-20">
+          <div className="max-w-xl lg:max-w-2xl animate-fadeIn">
 
-<div
-className='
-relative
-z-10
-max-w-screen-2xl
-mx-auto
-px-4
-sm:px-6
-lg:px-10
-xl:px-16
-2xl:px-24
-w-full
-'
->
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-xs font-bold uppercase tracking-[4px] text-white/75">
+                NEW SEASON
+              </span>
+              <span className="w-14 h-px bg-white/40" />
+            </div>
 
-<div
-className='
-max-w-4xl
-py-24
-sm:py-28
-md:py-32
-'
->
+            {/* Headline */}
+            <h1
+              className="font-display font-black uppercase text-white leading-[0.9] tracking-tight mb-4"
+              style={{ fontSize: "clamp(56px, 7.5vw, 96px)" }}
+            >
+              WINTER
+              <br />
+              ESSENTIALS
+            </h1>
 
-{/* ================= TOP TEXT ================= */}
+            {/* Tagline */}
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/80 mb-3">
+              Stay Warm. Stay Stylish.
+            </p>
 
-<h3
+            {/* Body copy */}
+            <p className="text-[14px] sm:text-[15px] text-white/65 leading-relaxed max-w-md mb-9">
+              Discover our handpicked collection of jackets, hoodies, sweaters and
+              more — only at{" "}
+              <span className="font-black text-white">SHOPPR.</span>
+            </p>
 
-className='
-text-xl
-sm:text-3xl
-md:text-4xl
-lg:text-5xl
-text-white
-mb-4
-sm:mb-5
-leading-snug
-drop-shadow-xl
-'
+            {/* CTA buttons */}
+            <div className="flex items-center gap-4">
+              <Link
+                to="/collection/winterwear"
+                className="inline-flex items-center gap-2.5 bg-white text-black hover:bg-neutral-100 active:scale-95 font-extrabold uppercase text-xs tracking-[0.15em] px-8 py-4 transition-all shadow-xl rounded-sm"
+              >
+                <span>SHOP COLLECTION</span>
+                <FiArrowRight size={15} />
+              </Link>
+              <Link
+                to="/collection"
+                className="inline-flex items-center gap-2.5 border border-white/40 text-white hover:bg-white/10 active:scale-95 font-extrabold uppercase text-xs tracking-[0.15em] px-8 py-4 transition-all rounded-sm"
+              >
+                <span>NEW ARRIVALS</span>
+                <FiArrowRight size={15} />
+              </Link>
+            </div>
 
-style={{
+          </div>
+        </div>
+      </div>
 
-fontFamily:"'Pacifico',cursive"
+    </section>
+  );
+};
 
-}}
-
->
-
-Fresh Fits for Frosty Days
-
-</h3>
-
-{/* ================= OFFER ================= */}
-
-<h2
-className='
-uppercase
-text-sm
-sm:text-lg
-md:text-xl
-lg:text-2xl
-tracking-[0.15rem]
-sm:tracking-[0.25rem]
-font-semibold
-mb-3
-sm:mb-5
-text-white
-drop-shadow-lg
-leading-relaxed
-'
->
-
-Get More for Less - 40% Off!
-
-</h2>
-
-{/* ================= MAIN HEADING ================= */}
-
-<h1
-className='
-text-[42px]
-xs:text-[52px]
-sm:text-6xl
-md:text-7xl
-lg:text-8xl
-xl:text-9xl
-font-black
-leading-[0.95]
-mb-6
-sm:mb-8
-text-white
-drop-shadow-2xl
-max-w-5xl
-'
->
-
-on Coats & Jackets
-
-</h1>
-
-{/* ================= PRICE ================= */}
-
-<div
-className='
-flex
-items-center
-gap-3
-sm:gap-5
-flex-wrap
-'
->
-
-<h3
-className='
-text-lg
-sm:text-2xl
-md:text-3xl
-lg:text-5xl
-font-semibold
-text-white
-drop-shadow-lg
-'
->
-
-Starting at
-
-</h3>
-
-<span
-className='
-bg-white
-px-4
-sm:px-5
-py-2
-rotate-2
-shadow-2xl
-rounded-md
-flex
-items-start
-'
->
-
-<span
-className='
-text-lg
-sm:text-xl
-relative
-top-1
-'
->
-
-$
-
-</span>
-
-<span
-className='
-text-4xl
-sm:text-5xl
-md:text-6xl
-lg:text-7xl
-font-black
-leading-none
-mx-1
-'
->
-
-99
-
-</span>
-
-<span
-className='
-text-lg
-sm:text-2xl
-self-end
-mb-1
-'
->
-
-.99
-
-</span>
-
-</span>
-
-</div>
-
-{/* ================= BUTTON ================= */}
-
-<Link
-
-to='/collection'
-
-className='
-inline-flex
-items-center
-justify-center
-mt-10
-sm:mt-12
-bg-black
-text-white
-w-full
-xs:w-[220px]
-sm:w-56
-h-12
-sm:h-14
-md:h-16
-text-base
-sm:text-xl
-md:text-2xl
-font-bold
-hover:bg-gray-800
-duration-300
-rounded-full
-shadow-2xl
-hover:scale-[1.03]
-transition-all
-'
-
->
-
-Shop Now
-
-</Link>
-
-</div>
-
-</div>
-
-</section>
-
-)
-
-}
-
-export default Hero
+export default Hero;

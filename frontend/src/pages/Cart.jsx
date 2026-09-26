@@ -1,364 +1,239 @@
-import React,{useContext,useEffect,useState}from'react'
-import{ShopContext}from'../Context/ShopContext'
-
-import Title from'../components/Title'
-import CartTotal from'../components/CartTotal'
-
-import{FaMinus,FaPlus}from'react-icons/fa6'
-import{IoClose}from'react-icons/io5'
-
-import Footer from'../components/Footer'
-
-const Cart=()=>{
-
-const{
-navigate,
-products,
-currency,
-cartItems,
-updateQuantity
-}=useContext(ShopContext)
-
-const[cartData,setCartData]=useState([])
-
-useEffect(()=>{
-
-if(products.length>0){
-
-const tempData=[]
-
-for(const itemId in cartItems){
-
-for(const size in cartItems[itemId]){
-
-if(cartItems[itemId][size]>0){
-
-tempData.push({
-
-_id:itemId,
-
-size:size,
-
-quantity:cartItems[itemId][size]
-
-})
-
-}
-
-}
-
-}
-
-setCartData(tempData)
-
-}
-
-},[cartItems,products])
-
-/* ================= INCREMENT ================= */
-
-const increment=async(id,size)=>{
-
-const currQuantity=cartItems[id][size]
-
-await updateQuantity(
-id,
-size,
-currQuantity+1
-)
-
-}
-
-/* ================= DECREMENT ================= */
-
-const decrement=async(id,size)=>{
-
-const currQuantity=cartItems[id][size]
-
-if(currQuantity>1){
-
-await updateQuantity(
-id,
-size,
-currQuantity-1
-)
-
-}
-
-}
-
-return products.length>0&&cartItems?(
-
-<>
-
-<div className='bg-[#f8f8f8] min-h-screen pt-6 pb-20'>
-
-<div className='w-full px-8 xl:px-16 2xl:px-24'>
-
-{/* ================= HEADING ================= */}
-
-<div className='mb-10'>
-
-<h1 className='text-4xl font-black text-black'>
-
-Shopping
-<span className='font-light text-gray-500'>
-Cart
-</span>
-
-</h1>
-
-<p className='text-gray-500 mt-3 text-lg max-w-2xl'>
-
-Review your selected products before proceeding to checkout.
-
-</p>
-
-</div>
-
-<div className='grid xl:grid-cols-[1.8fr_0.8fr] gap-10'>
-
-{/* ================= LEFT SIDE ================= */}
-
-<div>
-
-{/* ================= TABLE HEADER ================= */}
-
-<div className='hidden md:grid grid-cols-[2fr_120px_160px_120px_80px] bg-white rounded-2xl px-6 py-5 mb-5 shadow-sm border border-gray-100 text-sm font-bold text-gray-600 uppercase tracking-wide'>
-
-<p>
-Product
-</p>
-
-<p className='text-center'>
-Price
-</p>
-
-<p className='text-center'>
-Quantity
-</p>
-
-<p className='text-center'>
-Total
-</p>
-
-<p className='text-center'>
-Remove
-</p>
-
-</div>
-
-{/* ================= CART ITEMS ================= */}
-
-<div className='flex flex-col gap-5'>
-
-{
-
-cartData.map((item,i)=>{
-
-const product=
-products.find(
-(p)=>p._id===item._id
-)
-
-if(!product)return null
-
-const quantity=
-cartItems[item._id][item.size]
-
-return(
-
-<div
-
-key={i}
-
-className='bg-white rounded-3xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300'
-
->
-
-<div className='grid md:grid-cols-[2fr_120px_160px_120px_80px] gap-6 items-center'>
-
-{/* ================= PRODUCT ================= */}
-
-<div className='flex items-center gap-5'>
-
-<div className='bg-[#f7f7f7] rounded-2xl p-3'>
-
-<img
-
-src={product.image[0]}
-
-alt='product'
-
-className='w-24 h-24 object-contain'
-
-/>
-
-</div>
-
-<div>
-
-<h3 className='text-lg font-bold text-black leading-tight mb-2'>
-
-{product.name}
-
-</h3>
-
-<div className='flex items-center gap-3 text-sm text-gray-500'>
-
-<span className='bg-gray-100 px-3 py-1 rounded-full font-medium'>
-
-Size : {item.size}
-
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-{/* ================= PRICE ================= */}
-
-<div className='text-center'>
-
-<p className='text-lg font-bold text-black'>
-
-{currency}{product.offerPrice}
-
-</p>
-
-</div>
-
-{/* ================= QUANTITY ================= */}
-
-<div className='flex justify-center'>
-
-<div className='flex items-center bg-[#f8f8f8] rounded-full p-1 border border-gray-200'>
-
-<button
-
-onClick={()=>decrement(item._id,item.size)}
-
-className='w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center hover:bg-black hover:text-white transition'
-
->
-
-<FaMinus className='text-xs'/>
-
-</button>
-
-<span className='w-12 text-center font-bold text-lg'>
-
-{quantity}
-
-</span>
-
-<button
-
-onClick={()=>increment(item._id,item.size)}
-
-className='w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center hover:bg-black hover:text-white transition'
-
->
-
-<FaPlus className='text-xs'/>
-
-</button>
-
-</div>
-
-</div>
-
-{/* ================= TOTAL ================= */}
-
-<div className='text-center'>
-
-<p className='text-xl font-extrabold text-black'>
-
-{currency}
-{product.offerPrice*quantity}
-
-</p>
-
-</div>
-
-{/* ================= REMOVE ================= */}
-
-<div className='flex justify-center'>
-
-<button
-
-onClick={async()=>{
-
-await updateQuantity(
-item._id,
-item.size,
-0
-)
-
-}}
-
-className='w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-red-500 hover:text-white hover:border-red-500 transition'
-
->
-
-<IoClose className='text-xl'/>
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-)
-
-})
-
-}
-
-</div>
-
-</div>
-
-{/* ================= RIGHT SIDE ================= */}
-
-<div>
-
-<div className='sticky top-28'>
-
-<CartTotal/>
-
-<button
-
-onClick={()=>navigate('/collection')}
-
-className='w-full mt-5 border border-black text-black py-4 rounded-2xl font-bold hover:bg-black hover:text-white transition-all duration-300'
-
->
-
-Continue Shopping
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-</>
-
-):null
-
-}
-
-export default Cart 
+// ======================= CART.JSX (FASHION SHOPPING BAG) =======================
+
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { FiTrash2, FiHeart, FiShoppingBag, FiArrowRight, FiMinus, FiPlus } from "react-icons/fi";
+import { ShopContext } from "../Context/ShopContext";
+import CartTotal from "../components/CartTotal";
+
+const Cart = () => {
+  const {
+    navigate,
+    products,
+    cartItems,
+    updateQuantity,
+    formatPrice,
+    toggleWishlist,
+    isInWishlist
+  } = useContext(ShopContext);
+
+  const [cartData, setCartData] = useState([]);
+
+  useEffect(() => {
+    if (products.length > 0 && cartItems) {
+      const list = [];
+      for (const itemId in cartItems) {
+        for (const size in cartItems[itemId]) {
+          if (cartItems[itemId][size] > 0) {
+            list.push({
+              _id: itemId,
+              size: size,
+              quantity: cartItems[itemId][size]
+            });
+          }
+        }
+      }
+      setCartData(list);
+    } else {
+      setCartData([]);
+    }
+  }, [cartItems, products]);
+
+  const handleIncrement = (id, size) => {
+    const curr = cartItems[id]?.[size] || 0;
+    updateQuantity(id, size, curr + 1);
+  };
+
+  const handleDecrement = (id, size) => {
+    const curr = cartItems[id]?.[size] || 0;
+    if (curr > 1) {
+      updateQuantity(id, size, curr - 1);
+    } else {
+      updateQuantity(id, size, 0);
+    }
+  };
+
+  /* ================= EMPTY BAG STATE ================= */
+  if (cartData.length === 0) {
+    return (
+      <div className="bg-[#fafafa] min-h-[75vh] flex items-center justify-center px-4 py-16">
+        <div className="bg-white rounded-3xl p-8 sm:p-12 text-center shadow-xs border border-gray-100 max-w-md w-full">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-gray-50 flex items-center justify-center mb-5 text-gray-400">
+            <FiShoppingBag size={28} />
+          </div>
+          <h2 className="font-display text-2xl sm:text-3xl font-black text-black">
+            Your Bag is Empty
+          </h2>
+          <p className="text-gray-500 mt-2 text-xs sm:text-sm leading-relaxed">
+            You haven't added any luxury streetwear pieces or clothing to your bag yet.
+          </p>
+          <button
+            onClick={() => navigate("/collection")}
+            className="mt-6 w-full btn-dark text-xs uppercase tracking-wider"
+          >
+            Explore Catalogue
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-[#fafafa] min-h-screen pt-4 sm:pt-8 pb-24 overflow-hidden">
+      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24">
+
+        {/* Heading */}
+        <div className="mb-6 pb-4 border-b border-gray-200/80 flex items-end justify-between">
+          <div>
+            <p className="text-[11px] uppercase tracking-[3px] font-bold text-gray-400 mb-1">
+              Checkout Bag
+            </p>
+            <h1 className="font-display text-2xl sm:text-4xl font-black uppercase text-black tracking-tight">
+              Shopping <span className="text-gray-400 font-light">Bag</span>
+            </h1>
+          </div>
+          <span className="text-xs sm:text-sm font-bold text-gray-500">
+            {cartData.length} {cartData.length === 1 ? "Product" : "Products"} Selected
+          </span>
+        </div>
+
+        {/* 2-Column Bag Layout */}
+        <div className="grid xl:grid-cols-[1.8fr_1fr] gap-8 items-start">
+
+          {/* Left Column: Items List */}
+          <div className="flex flex-col gap-4">
+            {cartData.map((item, idx) => {
+              const product = products.find((p) => p._id === item._id);
+              if (!product) return null;
+
+              const inWishlist = isInWishlist(product._id);
+              const pricePerUnit = Number(product.offerPrice || product.price);
+              const itemTotal = pricePerUnit * item.quantity;
+
+              return (
+                <div
+                  key={idx}
+                  className="bg-white rounded-3xl p-4 sm:p-5 border border-gray-100 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                >
+                  {/* Thumbnail & Info */}
+                  <div className="flex items-center gap-4 min-w-0 flex-1">
+                    <Link
+                      to={`/collection/${product.category?.toLowerCase()}/${product._id}`}
+                      className="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl bg-neutral-50 p-2 shrink-0 border border-gray-100 flex items-center justify-center overflow-hidden"
+                    >
+                      <img
+                        src={product.image?.[0]}
+                        alt={product.name}
+                        className="w-full h-full object-contain"
+                      />
+                    </Link>
+
+                    <div className="min-w-0">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">
+                        {product.brand || "SHOPPR"} • {product.category}
+                      </span>
+
+                      <Link
+                        to={`/collection/${product.category?.toLowerCase()}/${product._id}`}
+                        className="font-display text-sm sm:text-base font-bold text-black uppercase leading-snug truncate block hover:text-gray-600 transition-colors"
+                      >
+                        {product.name}
+                      </Link>
+
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="bg-neutral-100 text-neutral-800 text-[11px] font-bold px-2.5 py-0.5 rounded-lg border border-neutral-200">
+                          Size: {item.size}
+                        </span>
+                        <span className="text-xs text-gray-500 font-semibold">
+                          {formatPrice(pricePerUnit)} / each
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quantity Stepper & Subtotal */}
+                  <div className="flex items-center justify-between w-full sm:w-auto sm:justify-end gap-6 pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-100">
+                    {/* Stepper */}
+                    <div className="flex items-center border border-gray-200 rounded-xl bg-gray-50 p-1">
+                      <button
+                        onClick={() => handleDecrement(item._id, item.size)}
+                        aria-label="Decrease quantity"
+                        className="w-7 h-7 rounded-lg bg-white flex items-center justify-center text-gray-700 hover:bg-black hover:text-white transition-colors shadow-xs"
+                      >
+                        <FiMinus size={12} />
+                      </button>
+                      <span className="w-8 text-center text-xs font-bold text-black">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => handleIncrement(item._id, item.size)}
+                        aria-label="Increase quantity"
+                        className="w-7 h-7 rounded-lg bg-white flex items-center justify-center text-gray-700 hover:bg-black hover:text-white transition-colors shadow-xs"
+                      >
+                        <FiPlus size={12} />
+                      </button>
+                    </div>
+
+                    {/* Total Price for this item */}
+                    <div className="text-right min-w-[80px]">
+                      <span className="font-display font-black text-base sm:text-lg text-black block">
+                        {formatPrice(itemTotal)}
+                      </span>
+                      {product.price > product.offerPrice && (
+                        <span className="text-[11px] text-gray-400 line-through">
+                          {formatPrice(product.price * item.quantity)}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Action buttons: Move to Wishlist / Remove */}
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => toggleWishlist(product._id)}
+                        title={inWishlist ? "Saved in Wishlist" : "Move to Wishlist"}
+                        aria-label="Wishlist toggle"
+                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                          inWishlist ? "text-rose-600 bg-rose-50" : "text-gray-400 hover:text-black hover:bg-gray-100"
+                        }`}
+                      >
+                        <FiHeart size={14} className={inWishlist ? "fill-rose-600" : ""} />
+                      </button>
+
+                      <button
+                        onClick={() => updateQuantity(item._id, item.size, 0)}
+                        title="Remove from Bag"
+                        aria-label="Remove item"
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                      >
+                        <FiTrash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            <div className="pt-2">
+              <Link
+                to="/collection"
+                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-black hover:underline"
+              >
+                <span>Continue Shopping Catalogue</span>
+                <FiArrowRight size={13} />
+              </Link>
+            </div>
+          </div>
+
+          {/* Right Column: Order Summary & Coupon Engine */}
+          <div className="xl:sticky xl:top-24">
+            <CartTotal />
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default Cart;

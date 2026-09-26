@@ -1,10 +1,6 @@
 import express from "express";
 
-import {
-    adminLogin,
-    adminLogout,
-    isAdminAuth
-} from "../controllers/adminController.js";
+import { adminLogin, adminLogout, isAdminAuth } from "../controllers/adminController.js";
 
 import authAdmin from "../middlewares/authAdmin.js";
 
@@ -15,6 +11,6 @@ adminRouter.post('/login', adminLogin);
 
 adminRouter.post('/logout', adminLogout);
 
-adminRouter.get('/is-auth', authAdmin, isAdminAuth);
+adminRouter.get('/is-auth', isAdminAuth);
 
 export default adminRouter;

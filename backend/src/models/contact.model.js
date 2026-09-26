@@ -4,50 +4,24 @@ import mongoose from "mongoose";
 
 const contactSchema = new mongoose.Schema({
 
-name: {
-type: String,
-required: true
-},
+    name: { type: String, required: true },
 
-email: {
-type: String,
-required: true
-},
+    email: { type: String, required: true },
 
-phone: {
-type: String,
-required: true
-},
+    phone: { type: String, required: true },
 
-subject: {
-type: String,
-required: true
-},
+    subject: { type: String, required: true },
 
-message: {
-type: String,
-required: true
-},
+    message: { type: String, required: true },
 
-status: {
-type: String,
-default: "Pending"
-},
+    status: { type: String, default: "Pending" },
 
-isRead: {
-type: Boolean,
-default: false
-}
+    isRead: { type: Boolean, default: false }
 
-},{
-timestamps: true
-});
+}, { timestamps: true });
 
 /* ================= MODEL ================= */
 
-const contactModel = mongoose.models.contact || mongoose.model(
-"contact",
-contactSchema
-);
+const contactModel = mongoose.models.contact || mongoose.model("contact", contactSchema);
 
 export default contactModel;

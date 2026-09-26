@@ -1,231 +1,126 @@
-import React,{
-useContext,
-useEffect,
-useState
-} from 'react'
-
-import {
-Swiper,
-SwiperSlide
-} from 'swiper/react'
-
-import 'swiper/css'
-
-import {
-Autoplay
-} from 'swiper/modules'
-
-import {
-ShopContext
-} from '../Context/ShopContext'
-
-import Title from './Title'
-
-import Item from './Item'
-
-const PopularProducts=()=>{
-
-const {
-products=[]
-}=useContext(ShopContext)
-
-const[
-popularProducts,
-setPopularProducts
-]=useState([])
-
-useEffect(()=>{
-
-const data=products.filter(
-
-(item)=>item.popular
-
-)
-
-setPopularProducts(data.slice(0,10))
-
-},[products])
-
-return(
-
-<section
-className='
-max-w-screen-2xl
-mx-auto
-px-4
-sm:px-6
-lg:px-10
-xl:px-12
-py-16
-sm:py-20
-overflow-hidden
-'
->
-
-{/* ================= TITLE ================= */}
-
-<div className='mb-10 sm:mb-12'>
-
-<Title
-title1={"Popular"}
-title2={"Products"}
-titleStyles={"pb-4 sm:pb-6"}
-/>
-
-<p
-className='
-text-sm
-sm:text-base
-lg:text-lg
-text-gray-500
-max-w-2xl
-leading-7
-'
->
-
-Discover our trending premium fashion products loved by
-customers worldwide.
-
-</p>
-
-</div>
-
-{/* ================= SWIPER ================= */}
-
-<Swiper
-
-loop={popularProducts.length>5}
-
-autoplay={{
-
-delay:3500,
-disableOnInteraction:false,
-
-}}
-
-breakpoints={{
-
-320:{
-slidesPerView:1.2,
-spaceBetween:14,
-},
-
-480:{
-slidesPerView:1.5,
-spaceBetween:16,
-},
-
-640:{
-slidesPerView:2,
-spaceBetween:18,
-},
-
-900:{
-slidesPerView:3,
-spaceBetween:20,
-},
-
-1200:{
-slidesPerView:4,
-spaceBetween:22,
-},
-
-1536:{
-slidesPerView:5,
-spaceBetween:24,
-},
-
-}}
-
-modules={[Autoplay]}
-
-className='!overflow-visible'
-
->
-
-{
-
-popularProducts.map((product)=>(
-
-<SwiperSlide
-key={product._id}
-className='pb-4'
->
-
-<Item product={product}/>
-
-</SwiperSlide>
-
-))
-
-}
-
-</Swiper>
-
-{/* ================= EMPTY ================= */}
-
-{
-
-popularProducts.length===0&&(
-
-<div
-className='
-bg-white
-border
-border-gray-200
-rounded-[30px]
-h-[280px]
-sm:h-[340px]
-flex
-flex-col
-items-center
-justify-center
-text-center
-mt-6
-shadow-sm
-px-5
-'
->
-
-<h3
-className='
-text-2xl
-sm:text-3xl
-font-black
-text-black
-'
->
-
-No Popular Products
-
-</h3>
-
-<p
-className='
-text-gray-500
-mt-3
-text-sm
-sm:text-base
-leading-7
-max-w-md
-'
->
-
-Popular products will appear here once marked as trending
-from the admin dashboard.
-
-</p>
-
-</div>
-
-)
-
-}
-
-</section>
-
-)
-
-}
-
-export default PopularProducts
+/* ======================= POPULARPRODUCT.JSX — FULLY RESPONSIVE TRENDING CAROUSEL ======================= */
+
+import React, { useContext, useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { Autoplay } from "swiper/modules";
+import { FiTrendingUp, FiArrowRight } from "react-icons/fi";
+import { ShopContext } from "../Context/ShopContext";
+import Item from "./Item";
+
+const PopularProducts = () => {
+  const { products = [], navigate } = useContext(ShopContext);
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [popularProducts, setPopularProducts] = useState([]);
+
+  useEffect(() => {
+    let data = products.filter((item) => item.popular || item.isBestSeller);
+    if (data.length < 4) {
+      data = products.slice(0, 10);
+    }
+    if (activeFilter !== "all") {
+      data = data.filter(
+        (item) => item.category?.toLowerCase() === activeFilter.toLowerCase()
+      );
+    }
+    setPopularProducts(data);
+  }, [products, activeFilter]);
+
+  const filterTabs = [
+    { id: "all", label: "All" },
+    { id: "men", label: "Men" },
+    { id: "women", label: "Women" },
+    { id: "footwear", label: "Footwear" },
+    { id: "winterwear", label: "Winter" }
+  ];
+
+  return (
+    <section className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-10 sm:py-14 overflow-hidden">
+      {/* Header row — stacks on mobile */}
+      <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 pb-4 border-b border-gray-100">
+        <div>
+          <div className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold text-rose-600 uppercase tracking-widest mb-1">
+            <FiTrendingUp />
+            <span>Fast Selling Now</span>
+          </div>
+          <h2 className="font-display text-xl sm:text-3xl lg:text-4xl font-black uppercase text-black tracking-tight">
+            Trending{" "}
+            <span className="text-gray-400 font-light">Pieces</span>
+          </h2>
+        </div>
+
+        {/* Filter pills — scroll horizontally on mobile */}
+        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-0.5 -mx-1 px-1">
+          {filterTabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveFilter(tab.id)}
+              className={`px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase transition-all whitespace-nowrap ${
+                activeFilter === tab.id
+                  ? "bg-black text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Swiper carousel — more visible slides on mobile (1.6), more on desktop (5) */}
+      {popularProducts.length > 0 ? (
+        <Swiper
+          loop={popularProducts.length > 4}
+          autoplay={{
+            delay: 3500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+          }}
+          breakpoints={{
+            /* 320px — tiny phone: show 1.6 cards */
+            320: { slidesPerView: 1.6, spaceBetween: 10 },
+            /* 480px — larger phone: show 2 cards */
+            480: { slidesPerView: 2.1, spaceBetween: 12 },
+            /* 640px — small tablet: show 2.5 */
+            640: { slidesPerView: 2.5, spaceBetween: 14 },
+            /* 768px — tablet: show 3 */
+            768: { slidesPerView: 3, spaceBetween: 16 },
+            /* 1024px — desktop: show 4 */
+            1024: { slidesPerView: 4, spaceBetween: 18 },
+            /* 1280px — large desktop: show 4.5 */
+            1280: { slidesPerView: 4.5, spaceBetween: 20 },
+            /* 1536px — 2xl: show 5 */
+            1536: { slidesPerView: 5, spaceBetween: 22 }
+          }}
+          modules={[Autoplay]}
+          className="!overflow-visible"
+        >
+          {popularProducts.map((product) => (
+            <SwiperSlide key={product._id} className="pb-4">
+              <Item product={product} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <div className="bg-white rounded-2xl p-8 text-center border border-gray-100">
+          <p className="text-gray-500 text-sm">
+            No trending items found in this section.
+          </p>
+        </div>
+      )}
+
+      {/* Bottom CTA */}
+      <div className="mt-6 sm:mt-8 text-center">
+        <button
+          onClick={() => navigate("/collection")}
+          className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-black hover:underline"
+        >
+          <span>Explore Entire Catalog</span>
+          <FiArrowRight size={13} />
+        </button>
+      </div>
+    </section>
+  );
+};
+
+export default PopularProducts;
