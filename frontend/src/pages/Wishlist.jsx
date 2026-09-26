@@ -83,7 +83,7 @@ const Wishlist = () => {
                   {/* Image */}
                   <Link
                     to={`/collection/${product.category?.toLowerCase()}/${product._id}`}
-                    className="aspect-[3/4] bg-neutral-100 overflow-hidden relative block"
+                    className="aspect-[4/5] bg-neutral-100 overflow-hidden relative block"
                   >
                     <img
                       src={
@@ -101,7 +101,7 @@ const Wishlist = () => {
                   </Link>
 
                   {/* Body */}
-                  <div className="p-3.5 flex flex-col flex-1">
+                  <div className="p-2.5 sm:p-3 flex flex-col flex-1">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
                       {product.brand || "SHOPPR"} • {product.category}
                     </span>

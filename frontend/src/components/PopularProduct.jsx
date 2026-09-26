@@ -77,20 +77,20 @@ const PopularProducts = () => {
             pauseOnMouseEnter: true
           }}
           breakpoints={{
-            /* 320px — tiny phone: show 1.6 cards */
-            320: { slidesPerView: 1.6, spaceBetween: 10 },
-            /* 480px — larger phone: show 2 cards */
-            480: { slidesPerView: 2.1, spaceBetween: 12 },
-            /* 640px — small tablet: show 2.5 */
-            640: { slidesPerView: 2.5, spaceBetween: 14 },
-            /* 768px — tablet: show 3 */
-            768: { slidesPerView: 3, spaceBetween: 16 },
-            /* 1024px — desktop: show 4 */
-            1024: { slidesPerView: 4, spaceBetween: 18 },
-            /* 1280px — large desktop: show 4.5 */
-            1280: { slidesPerView: 4.5, spaceBetween: 20 },
-            /* 1536px — 2xl: show 5 */
-            1536: { slidesPerView: 5, spaceBetween: 22 }
+            /* 320px — tiny phone: show 2 cards */
+            320: { slidesPerView: 2, spaceBetween: 10 },
+            /* 480px — larger phone: show 2.3 cards */
+            480: { slidesPerView: 2.3, spaceBetween: 12 },
+            /* 640px — small tablet: show 3 */
+            640: { slidesPerView: 3, spaceBetween: 14 },
+            /* 768px — tablet: show 3.5 */
+            768: { slidesPerView: 3.5, spaceBetween: 14 },
+            /* 1024px — desktop: show 4.5 */
+            1024: { slidesPerView: 4.5, spaceBetween: 16 },
+            /* 1280px — large desktop: show 5.2 */
+            1280: { slidesPerView: 5.2, spaceBetween: 18 },
+            /* 1536px — 2xl: show 6 */
+            1536: { slidesPerView: 6, spaceBetween: 18 }
           }}
           modules={[Autoplay]}
           className="!overflow-visible"

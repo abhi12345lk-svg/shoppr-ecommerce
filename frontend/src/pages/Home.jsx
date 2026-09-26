@@ -14,7 +14,7 @@ import { ShopContext } from "../Context/ShopContext";
 const Home = () => {
   const { products, navigate } = useContext(ShopContext);
 
-  const newArrivals = products.slice(0, 8);
+  const newArrivals = products.slice(0, 10);
 
   const instagramShots = [
     {
@@ -170,7 +170,7 @@ const Home = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-4.5">
           {newArrivals.map((product) => (
             <Item key={product._id} product={product} />
           ))}

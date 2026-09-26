@@ -36,10 +36,11 @@ const RelatedProducts = () => {
         loop={popularProducts.length > 4}
         autoplay={{ delay: 2500, disableOnInteraction: false }}
         breakpoints={{
-          640: { slidesPerView: 2 },
-          768: { slidesPerView: 3 },
-          1024: { slidesPerView: 4 },
-          1536: { slidesPerView: 5 },
+          0: { slidesPerView: 2, spaceBetween: 10 },
+          640: { slidesPerView: 3, spaceBetween: 14 },
+          768: { slidesPerView: 3.5, spaceBetween: 16 },
+          1024: { slidesPerView: 4.5, spaceBetween: 18 },
+          1400: { slidesPerView: 5.5, spaceBetween: 20 },
         }}
         modules={[Autoplay]}
       >
