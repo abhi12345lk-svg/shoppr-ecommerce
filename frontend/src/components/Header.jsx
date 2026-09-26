@@ -224,7 +224,7 @@ const Header = () => {
           scrolled ? "shadow-sm" : ""
         }`}
       >
-        <div className="max-w-[1900px] mx-auto px-3 sm:px-6 lg:px-10 xl:px-14">
+        <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="h-[58px] sm:h-[68px] xl:h-[74px] flex items-center justify-between gap-3">
 
             {/* ================= LEFT: LOGO & MOBILE HAMBURGER ================= */}

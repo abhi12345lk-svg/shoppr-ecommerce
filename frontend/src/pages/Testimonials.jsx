@@ -44,7 +44,7 @@ const Testimonial = () => {
       <div className='absolute top-0 left-0 w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] bg-black/5 rounded-full blur-3xl'></div>
       <div className='absolute bottom-0 right-0 w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] bg-black/5 rounded-full blur-3xl'></div>
 
-      <div className='max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 relative z-10'>
+      <div className='max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10'>
 
         {/* ================= HERO ================= */}
         <div className='relative bg-white border border-gray-200 rounded-[28px] sm:rounded-[50px] overflow-hidden p-5 sm:p-8 lg:p-14 2xl:p-20 mb-16 sm:mb-24 shadow-sm'>

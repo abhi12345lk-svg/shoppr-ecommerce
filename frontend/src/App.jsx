@@ -45,7 +45,7 @@ const App = () => {
   const isAdminPath = location.pathname.includes('/admin')
 
   return (
-    <main className='overflow-hidden text-tertiary min-h-screen bg-[#fafafa] flex flex-col justify-between'>
+    <main className='overflow-x-hidden text-neutral-900 min-h-screen bg-[#fafafa] flex flex-col justify-between'>
 
       {/* ================= LOGIN POPUP ================= */}
       {showUserLogin && <Login />}

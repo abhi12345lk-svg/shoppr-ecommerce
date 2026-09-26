@@ -5,7 +5,7 @@ import { FaInstagram, FaFacebookF, FaYoutube, FaXTwitter } from "react-icons/fa6
 const Footer = () => {
   return (
     <footer className="bg-white pt-12 sm:pt-16 border-t border-gray-100 overflow-hidden pb-16 md:pb-6">
-      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24">
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         {/* Top Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[2.5fr_1fr_1fr_1fr] gap-8 sm:gap-10 lg:gap-14 pb-10 sm:pb-12">
           {/* Brand Info */}

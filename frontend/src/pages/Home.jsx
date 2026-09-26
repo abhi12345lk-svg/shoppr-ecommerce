@@ -80,7 +80,7 @@ const Home = () => {
       <Categories />
 
       {/* 5. SNITCH-STYLE DUAL SPLIT EDITORIAL BANNERS */}
-      <section className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-6 sm:py-10">
+      <section className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {/* Card 1: Streetwear Edit */}
           <div
@@ -147,7 +147,7 @@ const Home = () => {
       <StyleSpotlight />
 
       {/* 8. NEW SEASON ARRIVALS GRID (SAVANA 2-COL MOBILE + SNITCH 4-COL DESKTOP) */}
-      <section className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-10 sm:py-16">
+      <section className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 sm:py-16">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8 pb-4 border-b border-gray-100">
           <div>
             <p className="text-[11px] uppercase tracking-[3px] font-bold text-gray-400 mb-1.5">
@@ -178,7 +178,7 @@ const Home = () => {
       </section>
 
       {/* 9. PROMOTIONAL STATEMENT BANNER */}
-      <section className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-6 sm:py-8">
+      <section className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8">
         <div className="relative rounded-3xl overflow-hidden bg-neutral-950 text-white p-7 sm:p-14 lg:p-16 border border-neutral-800">
           <div className="relative z-10 max-w-2xl">
             <span className="text-xs font-bold uppercase tracking-[3px] text-amber-400 mb-2 sm:mb-3 block">
@@ -207,7 +207,7 @@ const Home = () => {
       </section>
 
       {/* 10. INSTAGRAM LOOKBOOK FEED (#ShopprSociety) */}
-      <section className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-10 sm:py-16">
+      <section className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 sm:py-16">
         <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-[2px] mb-2">
             <FiInstagram size={14} />

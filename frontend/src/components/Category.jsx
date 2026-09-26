@@ -107,7 +107,7 @@ const Categories = () => {
   ];
 
   return (
-    <section className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-6 sm:py-12 overflow-hidden">
+    <section className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-12 overflow-hidden">
       
       {/* ============================================================
           1. SAVANA-STYLE MOBILE STORY BUBBLES (< md)

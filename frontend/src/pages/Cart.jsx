@@ -80,7 +80,7 @@ const Cart = () => {
 
   return (
     <div className="bg-[#fafafa] min-h-screen pt-4 sm:pt-8 pb-24 overflow-hidden">
-      <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24">
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
 
         {/* Heading */}
         <div className="mb-6 pb-4 border-b border-gray-200/80 flex items-end justify-between">

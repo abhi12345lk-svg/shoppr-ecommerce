@@ -139,7 +139,7 @@ const Hero = () => {
         />
 
         {/* Main Content Area */}
-        <div className="relative z-10 w-full max-w-[1900px] mx-auto px-10 lg:px-16 xl:px-20 2xl:px-28 py-16 lg:py-24 my-auto">
+        <div className="relative z-10 w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-16 lg:py-24 my-auto">
           <div className="max-w-xl lg:max-w-2xl animate-fadeIn">
 
             {/* Snitch Eyebrow Tag */}
@@ -193,8 +193,8 @@ const Hero = () => {
         </div>
 
         {/* Snitch Bottom Feature Perks Strip */}
-        <div className="relative z-10 w-full border-t border-white/15 bg-black/40 backdrop-blur-md py-3.5 px-10 lg:px-16 xl:px-20">
-          <div className="max-w-[1900px] mx-auto flex items-center justify-between text-[11px] font-bold uppercase tracking-[2px] text-white/70">
+        <div className="relative z-10 w-full border-t border-white/15 bg-black/40 backdrop-blur-md py-3.5">
+          <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex items-center justify-between text-[11px] font-bold uppercase tracking-[2px] text-white/70">
             <span className="flex items-center gap-2">
               <span className="text-amber-400">✦</span> 450 GSM Heavy Fleece
             </span>

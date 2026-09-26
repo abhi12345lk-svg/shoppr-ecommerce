@@ -35,7 +35,7 @@ const PopularProducts = () => {
   ];
 
   return (
-    <section className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-10 sm:py-14 overflow-hidden">
+    <section className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 sm:py-14 overflow-hidden">
       {/* Header row — stacks on mobile */}
       <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 pb-4 border-b border-gray-100">
         <div>

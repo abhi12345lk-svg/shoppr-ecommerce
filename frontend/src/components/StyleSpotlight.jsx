@@ -37,7 +37,7 @@ const StyleSpotlight = () => {
   ];
 
   return (
-    <section className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-10 sm:py-14">
+    <section className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 sm:py-14">
       {/* Header */}
       <div className="mb-6 sm:mb-8 pb-4 border-b border-gray-100">
         <p className="text-[10px] uppercase tracking-[3px] font-bold text-gray-400 mb-1">

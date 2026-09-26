@@ -54,7 +54,7 @@ const Contact = () => {
 
   return (
     <section className='w-full bg-[#fafafa] pt-4 sm:pt-8 pb-20 overflow-hidden min-h-screen'>
-      <div className='max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24'>
+      <div className='max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12'>
 
         {/* ================= HERO ================= */}
         <div className='flex flex-col xl:flex-row xl:items-end xl:justify-between gap-6 mb-10 sm:mb-12 pb-6 border-b border-gray-200/80'>

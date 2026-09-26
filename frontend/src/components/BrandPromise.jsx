@@ -29,7 +29,7 @@ const BrandPromise = () => {
 
   return (
     <div className="w-full bg-white border-y border-gray-100">
-      <div className="max-w-[1900px] mx-auto px-0">
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         {/* 2-col on mobile / 4-col on md+ with dividers */}
         <div className="grid grid-cols-2 md:grid-cols-4">
           {features.map((item, idx) => (
