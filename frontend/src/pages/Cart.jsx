@@ -119,12 +119,20 @@ const Cart = () => {
                   <div className="flex items-center gap-4 min-w-0 flex-1">
                     <Link
                       to={`/collection/${product.category?.toLowerCase()}/${product._id}`}
-                      className="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl bg-neutral-50 p-2 shrink-0 border border-gray-100 flex items-center justify-center overflow-hidden"
+                      className="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl bg-neutral-100 shrink-0 border border-gray-100 overflow-hidden block"
                     >
                       <img
-                        src={product.image?.[0]}
+                        src={
+                          product.image?.[0] ||
+                          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80"
+                        }
                         alt={product.name}
-                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src =
+                            "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80";
+                        }}
+                        className="w-full h-full object-cover object-top"
                       />
                     </Link>
 

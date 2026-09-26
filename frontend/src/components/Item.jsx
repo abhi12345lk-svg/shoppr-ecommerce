@@ -24,7 +24,7 @@ const Item = ({ product }) => {
   // Safe image fallback
   const firstImage =
     product?.image?.[0] ||
-    "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80";
+    "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80";
   const secondImage = product?.image?.[1] || firstImage;
   const currentImage = hovered && product?.image?.length > 1 ? secondImage : firstImage;
 
@@ -104,7 +104,7 @@ const Item = ({ product }) => {
         </div>
 
         {/* Product Image with smooth cross-fade */}
-        <div onClick={handleCardClick} className="w-full h-full p-2 flex items-center justify-center">
+        <div onClick={handleCardClick} className="w-full h-full overflow-hidden">
           <img
             src={currentImage}
             alt={product.name}
@@ -112,9 +112,9 @@ const Item = ({ product }) => {
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src =
-                "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80";
+                "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80";
             }}
-            className="w-full h-full object-contain object-center transition-all duration-500 group-hover:scale-105"
+            className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
           />
         </div>
 

@@ -131,14 +131,14 @@ const ProductDetails = () => {
                         activeImage === img ? "border-black shadow-xs scale-102" : "border-gray-200 hover:border-gray-400"
                       }`}
                     >
-                      <img src={img} alt="thumbnail" className="w-full h-full object-contain" />
+                      <img src={img} alt="thumbnail" className="w-full h-full object-cover object-top" />
                     </button>
                   ))}
                 </div>
               )}
 
               {/* Hero Showcase Image */}
-              <div className="flex-1 aspect-[3/4] bg-[#f8f8f8] rounded-3xl overflow-hidden relative flex items-center justify-center p-6 border border-gray-100">
+              <div className="flex-1 aspect-[3/4] bg-neutral-100 rounded-3xl overflow-hidden relative border border-gray-100 shadow-sm">
                 {discountPercent > 0 && (
                   <span className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
                     {discountPercent}% OFF
@@ -158,9 +158,18 @@ const ProductDetails = () => {
                 </button>
 
                 <img
-                  src={activeImage || product.image?.[0]}
+                  src={
+                    activeImage ||
+                    product.image?.[0] ||
+                    "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80"
+                  }
                   alt={product.name}
-                  className="w-full h-full object-contain hover:scale-105 transition-transform duration-500"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src =
+                      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80";
+                  }}
+                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 ease-out"
                 />
               </div>
             </div>

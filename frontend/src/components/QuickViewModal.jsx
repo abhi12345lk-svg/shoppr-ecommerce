@@ -64,11 +64,20 @@ const QuickViewModal = () => {
             </span>
           )}
 
-          <div className="aspect-[3/4] flex items-center justify-center overflow-hidden rounded-2xl bg-white/60 p-4">
+          <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-neutral-100 relative">
             <img
-              src={selectedImage || quickViewProduct.image?.[0]}
+              src={
+                selectedImage ||
+                quickViewProduct.image?.[0] ||
+                "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80"
+              }
               alt={quickViewProduct.name}
-              className="max-h-full max-w-full object-contain"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src =
+                  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80";
+              }}
+              className="w-full h-full object-cover object-top"
             />
           </div>
 

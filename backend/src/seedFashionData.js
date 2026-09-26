@@ -231,8 +231,8 @@ const FASHION_PRODUCTS = [
     price: 3499,
     offerPrice: 1999,
     image: [
-      "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80"
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80"
     ],
     category: "Winterwear",
     subCategory: "Hoodies & Sweats",
@@ -255,7 +255,7 @@ const FASHION_PRODUCTS = [
     price: 6999,
     offerPrice: 4499,
     image: [
-      "https://images.unsplash.com/photo-1539533018447-63fcce667823?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80"
     ],
     category: "Winterwear",
@@ -271,6 +271,52 @@ const FASHION_PRODUCTS = [
     fit: "Tailored Longline",
     care: "Specialist dry clean only.",
     tags: ["Overcoat", "Wool", "Longline", "Luxury"]
+  },
+  {
+    name: "Camel Wool-Blend Tailored Topcoat",
+    description: "Signature tailored camel wool-blend coat cut in an elongated fit with sharp notched lapels and structured shoulders.",
+    price: 5999,
+    offerPrice: 4299,
+    image: [
+      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=900&q=80"
+    ],
+    category: "Winterwear",
+    subCategory: "Overcoats & Jackets",
+    brand: "SHOPPR ATELIER",
+    color: "Camel Tan",
+    colorHex: "#c19a6b",
+    sizes: ["M", "L", "XL"],
+    popular: true,
+    inStock: true,
+    stockCount: 25,
+    fabric: "80% Virgin Wool, 20% Cashmere Blend",
+    fit: "Tailored Architectural Fit",
+    care: "Dry clean only.",
+    tags: ["Topcoat", "Wool", "Overcoat", "Camel"]
+  },
+  {
+    name: "Ribbed Merino Wool Knit Turtleneck Sweater",
+    description: "Pure extrafine Merino wool turtleneck crafted in an Ottoman ribbed stitch for exceptional warmth and tactile texture.",
+    price: 2999,
+    offerPrice: 1899,
+    image: [
+      "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=900&q=80"
+    ],
+    category: "Winterwear",
+    subCategory: "Sweaters & Knitwear",
+    brand: "SHOPPR",
+    color: "Charcoal Heather",
+    colorHex: "#2b2b2b",
+    sizes: ["S", "M", "L", "XL"],
+    popular: true,
+    inStock: true,
+    stockCount: 40,
+    fabric: "100% Extrafine Merino Wool",
+    fit: "Regular Structured Fit",
+    care: "Hand wash cold or dry clean.",
+    tags: ["Sweater", "Turtleneck", "Knitwear", "Merino"]
   }
 ];
 
