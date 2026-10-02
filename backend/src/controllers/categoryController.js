@@ -5,7 +5,7 @@ const DEFAULT_CATEGORIES = [
   {
     name: "Men",
     slug: "men",
-    image: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?auto=format&fit=crop&w=800&q=80",
     description: "Modern street style, oversized tees, formal shirts, chinos & jackets",
     featured: true,
     order: 1,
@@ -20,7 +20,7 @@ const DEFAULT_CATEGORIES = [
   {
     name: "Women",
     slug: "women",
-    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80",
     description: "Trending dresses, chic co-ords, tops, stylish denim & outerwear",
     featured: true,
     order: 2,
@@ -35,7 +35,7 @@ const DEFAULT_CATEGORIES = [
   {
     name: "Footwear",
     slug: "footwear",
-    image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1595341888016-a392ef81b7de?auto=format&fit=crop&w=800&q=80",
     description: "Chunky sneakers, formal loafers, slides & high-tops",
     featured: true,
     order: 3,
@@ -49,7 +49,7 @@ const DEFAULT_CATEGORIES = [
   {
     name: "Winterwear",
     slug: "winterwear",
-    image: "https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=80",
     description: "Oversized hoodies, sweatshirts, wool coats & parkas",
     featured: true,
     order: 4,
@@ -62,7 +62,7 @@ const DEFAULT_CATEGORIES = [
   {
     name: "Sportswear",
     slug: "sportswear",
-    image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80",
     description: "Athleisure, gym wear, performance joggers & track jackets",
     featured: false,
     order: 5,
@@ -75,7 +75,7 @@ const DEFAULT_CATEGORIES = [
   {
     name: "Kids",
     slug: "kids",
-    image: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80",
     description: "Vibrant comfort clothing and activewear for juniors",
     featured: false,
     order: 6,

@@ -1,10 +1,9 @@
-// ======================= CART.JSX (FASHION SHOPPING BAG) =======================
-
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FiTrash2, FiHeart, FiShoppingBag, FiArrowRight, FiMinus, FiPlus } from "react-icons/fi";
+import { FiTrash2, FiHeart, FiShoppingBag, FiArrowRight, FiMinus, FiPlus, FiTruck, FiShield, FiRefreshCw } from "react-icons/fi";
 import { ShopContext } from "../Context/ShopContext";
 import CartTotal from "../components/CartTotal";
+import Item from "../components/Item";
 
 const Cart = () => {
   const {
@@ -124,13 +123,13 @@ const Cart = () => {
                       <img
                         src={
                           product.image?.[0] ||
-                          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80"
+                          "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80"
                         }
                         alt={product.name}
                         onError={(e) => {
                           e.currentTarget.onerror = null;
                           e.currentTarget.src =
-                            "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80";
+                            "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80";
                         }}
                         className="w-full h-full object-cover object-top"
                       />
@@ -156,6 +155,11 @@ const Cart = () => {
                           {formatPrice(pricePerUnit)} / each
                         </span>
                       </div>
+                      <p className="text-[10px] text-emerald-700 font-semibold mt-1.5 flex items-center gap-1">
+                        <span>⚡ Express dispatch in 24h</span>
+                        <span className="text-gray-300">•</span>
+                        <span>7-day returnable</span>
+                      </p>
                     </div>
                   </div>
 
@@ -221,6 +225,22 @@ const Cart = () => {
               );
             })}
 
+            {/* Trust Assurance Banner */}
+            <div className="bg-white rounded-2xl p-4 border border-gray-100 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-gray-600 shadow-xs">
+              <div className="flex items-center gap-2">
+                <FiRefreshCw className="text-black shrink-0" size={15} />
+                <span><strong>7 Days Return</strong> with doorstep pickup</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FiShield className="text-black shrink-0" size={15} />
+                <span><strong>100% Genuine</strong> certified luxury fashion</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FiTruck className="text-black shrink-0" size={15} />
+                <span><strong>Express Dispatch</strong> all across India</span>
+              </div>
+            </div>
+
             <div className="pt-2">
               <Link
                 to="/collection"
@@ -238,6 +258,35 @@ const Cart = () => {
           </div>
 
         </div>
+
+        {/* ================= COMPLETE YOUR LOOK RECOMMENDATIONS ================= */}
+        {products.length > 0 && (
+          <div className="mt-16 pt-10 border-t border-gray-200/80">
+            <div className="flex items-end justify-between mb-6 pb-2">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[2px] text-gray-400 mb-1">
+                  You Might Also Like
+                </p>
+                <h3 className="font-display text-xl sm:text-2xl font-black uppercase text-black tracking-tight">
+                  Complete Your Look
+                </h3>
+              </div>
+              <Link
+                to="/collection"
+                className="text-xs font-bold uppercase tracking-wider text-black hover:underline flex items-center gap-1"
+              >
+                <span>Explore All</span>
+                <FiArrowRight size={13} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+              {products.slice(0, 4).map((p) => (
+                <Item key={p._id} product={p} />
+              ))}
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

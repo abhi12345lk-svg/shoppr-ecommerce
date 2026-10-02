@@ -1,7 +1,7 @@
-// ======================= ITEM.JSX (SNITCH DESKTOP QUICK-SIZE HOVER + SAVANA MOBILE FIT) =======================
+// ======================= ITEM.JSX (LUXURY EDITORIAL PRODUCT CARD) =======================
 
 import React, { useContext, useState } from "react";
-import { FiHeart, FiEye, FiShoppingBag, FiPlus } from "react-icons/fi";
+import { FiHeart, FiEye, FiPlus, FiCheck } from "react-icons/fi";
 import { ShopContext } from "../Context/ShopContext";
 
 const Item = ({ product }) => {
@@ -16,6 +16,7 @@ const Item = ({ product }) => {
 
   const [hovered, setHovered] = useState(false);
   const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || "M");
+  const [addedSize, setAddedSize] = useState(null);
 
   if (!product) return null;
 
@@ -24,7 +25,7 @@ const Item = ({ product }) => {
   // Safe image fallback
   const firstImage =
     product?.image?.[0] ||
-    "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80";
+    "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80";
   const secondImage = product?.image?.[1] || firstImage;
   const currentImage = hovered && product?.image?.length > 1 ? secondImage : firstImage;
 
@@ -39,6 +40,13 @@ const Item = ({ product }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleQuickAdd = (e, size) => {
+    e.stopPropagation();
+    addToCart(product._id, size);
+    setAddedSize(size);
+    setTimeout(() => setAddedSize(null), 1200);
+  };
+
   const availableSizes =
     product.sizes && product.sizes.length > 0
       ? product.sizes
@@ -48,13 +56,13 @@ const Item = ({ product }) => {
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="group flex flex-col h-full bg-white rounded-xl sm:rounded-2xl border border-gray-100 hover:border-gray-300 hover:shadow-[0_12px_28px_rgba(0,0,0,0.06)] transition-all duration-300 overflow-hidden relative"
+      className="group flex flex-col h-full bg-white rounded-2xl border border-neutral-200/70 hover:border-neutral-300 hover:shadow-[0_16px_36px_-10px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden relative"
     >
-      {/* ================= IMAGE CONTAINER (COMPACT 4:5 FASHION RATIO) ================= */}
+      {/* ================= IMAGE CONTAINER (LUXURY 4:5 RATIO) ================= */}
       <div className="relative aspect-[4/5] bg-neutral-100 overflow-hidden cursor-pointer">
         
         {/* Floating Action Buttons (Wishlist & Quick View) */}
-        <div className="absolute top-2 right-2 z-20 flex flex-col gap-1.5 items-center">
+        <div className="absolute top-2.5 right-2.5 z-20 flex flex-col gap-1.5 items-center">
           {/* Wishlist Button */}
           <button
             onClick={(e) => {
@@ -62,13 +70,13 @@ const Item = ({ product }) => {
               toggleWishlist(product._id);
             }}
             aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-            className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 ${
               inWishlist
-                ? "bg-rose-50 text-rose-600 shadow-sm"
-                : "bg-white/90 hover:bg-black hover:text-white text-gray-700 backdrop-blur-sm shadow-xs"
+                ? "bg-rose-50 text-rose-600 shadow-xs"
+                : "bg-white/85 hover:bg-white hover:text-black text-neutral-700 backdrop-blur-md shadow-xs hover:scale-105"
             }`}
           >
-            <FiHeart size={13} className={inWishlist ? "fill-rose-600" : ""} />
+            <FiHeart size={14} className={inWishlist ? "fill-rose-600 text-rose-600" : ""} />
           </button>
 
           {/* Quick View Button (Desktop Hover Only) */}
@@ -78,32 +86,32 @@ const Item = ({ product }) => {
               setQuickViewProduct(product);
             }}
             aria-label="Quick View"
-            className="hidden md:flex w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 hover:bg-black hover:text-white text-gray-700 backdrop-blur-sm shadow-xs items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100"
+            className="hidden md:flex w-8 h-8 rounded-full bg-white/85 hover:bg-white hover:text-black text-neutral-700 backdrop-blur-md shadow-xs items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-105"
           >
-            <FiEye size={13} />
+            <FiEye size={14} />
           </button>
         </div>
 
         {/* Badges */}
-        <div className="absolute top-2 left-2 z-20 flex flex-col gap-1 items-start">
+        <div className="absolute top-2.5 left-2.5 z-20 flex flex-col gap-1 items-start">
           {discountPercent > 0 && (
-            <span className="bg-black text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full shadow-xs">
+            <span className="bg-neutral-950 text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
               {discountPercent}% OFF
             </span>
           )}
           {product.isNewArrival && (
-            <span className="bg-emerald-600 text-white text-[8px] sm:text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full shadow-xs">
+            <span className="bg-emerald-600/95 backdrop-blur-xs text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
               New Drop
             </span>
           )}
           {product.popular && !product.isNewArrival && (
-            <span className="bg-amber-500 text-white text-[8px] sm:text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full shadow-xs">
+            <span className="bg-amber-500/95 backdrop-blur-xs text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
               Trending
             </span>
           )}
         </div>
 
-        {/* Product Image with smooth cross-fade */}
+        {/* Product Image with smooth cross-fade and scale */}
         <div onClick={handleCardClick} className="w-full h-full overflow-hidden">
           <img
             src={currentImage}
@@ -112,30 +120,31 @@ const Item = ({ product }) => {
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src =
-                "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80";
+                "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80";
             }}
-            className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+            className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
         </div>
 
-        {/* ================= SNITCH-STYLE QUICK SIZE SELECTOR ON HOVER (DESKTOP) ================= */}
-        <div className="absolute inset-x-1.5 bottom-1.5 z-20 hidden md:flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-          <div className="bg-white/95 backdrop-blur-md rounded-lg p-1 shadow-lg border border-gray-100 flex items-center justify-between gap-1">
-            <span className="text-[9px] font-black uppercase tracking-wider text-gray-500 pl-1">
-              Size:
+        {/* ================= QUICK SIZE SELECTOR ON HOVER (DESKTOP) ================= */}
+        <div className="absolute inset-x-2 bottom-2 z-20 hidden md:flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-all duration-250 transform translate-y-2 group-hover:translate-y-0">
+          <div className="bg-white/95 backdrop-blur-md rounded-xl p-1.5 shadow-xl border border-neutral-200/80 flex items-center justify-between gap-1">
+            <span className="text-[9px] font-black uppercase tracking-wider text-neutral-400 pl-1.5">
+              Quick Add:
             </span>
             <div className="flex items-center gap-1">
               {availableSizes.slice(0, 5).map((sz, i) => (
                 <button
                   key={i}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToCart(product._id, sz);
-                  }}
-                  className="h-6 min-w-[22px] px-1 rounded bg-gray-100 hover:bg-black hover:text-white text-[9px] font-black text-black transition-colors"
+                  onClick={(e) => handleQuickAdd(e, sz)}
+                  className={`h-6.5 min-w-[24px] px-1.5 rounded-md text-[9px] font-black uppercase transition-all flex items-center justify-center ${
+                    addedSize === sz
+                      ? "bg-emerald-600 text-white"
+                      : "bg-neutral-100 hover:bg-neutral-900 hover:text-white text-neutral-800"
+                  }`}
                   title={`Add size ${sz}`}
                 >
-                  {sz}
+                  {addedSize === sz ? <FiCheck size={11} /> : sz}
                 </button>
               ))}
             </div>
@@ -144,31 +153,49 @@ const Item = ({ product }) => {
 
       </div>
 
-      {/* ================= PRODUCT DETAILS (COMPACT & CLEAN) ================= */}
-      <div className="p-2.5 sm:p-3 flex flex-col flex-1">
+      {/* ================= PRODUCT DETAILS ================= */}
+      <div className="p-3 sm:p-3.5 flex flex-col flex-1">
         
         {/* Brand & Subcategory Tag */}
-        <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">
-          <span className="truncate max-w-[50%]">{product.brand || "SHOPPR"}</span>
-          <span className="truncate max-w-[50%] text-right">{product.subCategory || product.category}</span>
+        <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-bold uppercase tracking-[1.5px] text-neutral-400 mb-1">
+          <span className="truncate max-w-[55%]">{product.brand || "SHOPPR"}</span>
+          <span className="truncate max-w-[45%] text-right font-medium text-neutral-500">
+            {product.subCategory || product.category}
+          </span>
         </div>
 
         {/* Title */}
         <h3
           onClick={handleCardClick}
-          className="font-display text-[11px] sm:text-[13px] font-bold text-black uppercase leading-snug line-clamp-1 cursor-pointer hover:text-neutral-600 transition-colors"
+          className="font-display text-[12px] sm:text-[13px] font-bold text-neutral-950 uppercase leading-snug line-clamp-1 cursor-pointer hover:text-neutral-600 transition-colors"
         >
           {product.name}
         </h3>
 
-        {/* Pricing & Savana-style Mobile Quick Add */}
-        <div className="mt-auto pt-2 flex items-center justify-between gap-2 border-t border-gray-100">
+        {/* Color Hex Swatch indicator if present */}
+        {product.colorHex && (
+          <div className="flex items-center gap-1.5 mt-1.5">
+            <span
+              className="w-2.5 h-2.5 rounded-full border border-neutral-300 shadow-2xs inline-block"
+              style={{ backgroundColor: product.colorHex }}
+              title={product.color || "Color"}
+            />
+            {product.color && (
+              <span className="text-[10px] text-neutral-400 truncate font-medium">
+                {product.color}
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Pricing & Mobile Quick Add */}
+        <div className="mt-auto pt-2.5 flex items-center justify-between gap-2 border-t border-neutral-100">
           <div className="flex items-baseline gap-1.5 flex-wrap">
-            <span className="font-display font-black text-xs sm:text-sm text-black">
+            <span className="font-display font-black text-xs sm:text-sm text-neutral-950">
               {formatPrice(product.offerPrice)}
             </span>
             {product.price > product.offerPrice && (
-              <span className="text-gray-400 line-through text-[10px] sm:text-[11px]">
+              <span className="text-neutral-400 line-through text-[10px] sm:text-[11px]">
                 {formatPrice(product.price)}
               </span>
             )}
@@ -179,14 +206,23 @@ const Item = ({ product }) => {
             )}
           </div>
 
-          {/* Savana Quick Add Button on Mobile */}
+          {/* Quick Add Button on Mobile */}
           <button
-            onClick={() => addToCart(product._id, selectedSize)}
-            className="md:hidden bg-black text-white h-6 px-2 rounded-md text-[9px] font-bold flex items-center gap-1 active:scale-95 shadow-xs shrink-0"
+            onClick={(e) => handleQuickAdd(e, selectedSize)}
+            className="md:hidden bg-neutral-950 text-white h-6.5 px-2 rounded-lg text-[9px] font-bold flex items-center gap-1 active:scale-95 shadow-xs shrink-0 hover:bg-neutral-800 transition-colors"
             aria-label="Add to cart"
           >
-            <FiPlus size={11} />
-            <span>Add</span>
+            {addedSize ? (
+              <>
+                <FiCheck size={11} className="text-emerald-400" />
+                <span>Added</span>
+              </>
+            ) : (
+              <>
+                <FiPlus size={11} />
+                <span>Add</span>
+              </>
+            )}
           </button>
         </div>
 

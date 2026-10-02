@@ -38,6 +38,9 @@ const ProductDetails = () => {
   const [pincodeInput, setPincodeInput] = useState("");
   const [pincodeResult, setPincodeResult] = useState(null);
   const [pincodeLoading, setPincodeLoading] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50, active: false });
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const [viewingCount] = useState(() => Math.floor(Math.random() * 10) + 12);
 
   // Accordion states
   const [openAccordion, setOpenAccordion] = useState("fabric");
@@ -51,7 +54,40 @@ const ProductDetails = () => {
     }
   }, [product]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowStickyBar(window.scrollY > 450);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: product?.name || "SHOPPR",
+          text: `Check out ${product?.name} on SHOPPR`,
+          url: window.location.href
+        });
+      } catch {
+        // user dismissed dialog
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      toast.success("Product link copied to clipboard! 📋");
+    }
+  };
+
   if (!product) {
+    if (products.length === 0) {
+      return (
+        <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
+          <div className="w-10 h-10 border-4 border-gray-200 border-t-black rounded-full animate-spin mb-4" />
+          <p className="text-xs uppercase tracking-widest text-gray-400 font-bold">Loading Piece Details...</p>
+        </div>
+      );
+    }
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 text-center">
         <h2 className="font-display text-2xl sm:text-3xl font-black text-black mb-3">
@@ -137,40 +173,69 @@ const ProductDetails = () => {
                 </div>
               )}
 
-              {/* Hero Showcase Image */}
-              <div className="flex-1 aspect-[3/4] bg-neutral-100 rounded-3xl overflow-hidden relative border border-gray-100 shadow-sm">
+              {/* Hero Showcase Image with Luxury Zoom on Hover */}
+              <div
+                className="flex-1 aspect-[3/4] bg-neutral-100 rounded-3xl overflow-hidden relative border border-gray-100 shadow-sm cursor-zoom-in"
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = ((e.clientX - rect.left) / rect.width) * 100;
+                  const y = ((e.clientY - rect.top) / rect.height) * 100;
+                  setZoomPos({ x, y, active: true });
+                }}
+                onMouseLeave={() => setZoomPos((prev) => ({ ...prev, active: false }))}
+              >
                 {discountPercent > 0 && (
                   <span className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
                     {discountPercent}% OFF
                   </span>
                 )}
 
-                <button
-                  onClick={() => toggleWishlist(product._id)}
-                  aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-                  className={`absolute top-4 right-4 z-10 w-11 h-11 rounded-full flex items-center justify-center transition-all ${
-                    inWishlist
-                      ? "bg-rose-50 text-rose-600 shadow-sm"
-                      : "bg-white/90 hover:bg-black hover:text-white text-gray-700 backdrop-blur-sm shadow-xs"
-                  }`}
-                >
-                  <TbHeart size={20} className={inWishlist ? "fill-rose-600" : ""} />
-                </button>
+                <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+                  <button
+                    onClick={handleShare}
+                    aria-label="Share product"
+                    title="Share piece"
+                    className="w-10 h-10 rounded-full flex items-center justify-center bg-white/90 hover:bg-black hover:text-white text-gray-700 backdrop-blur-sm shadow-xs transition-all cursor-pointer"
+                  >
+                    <FiShare2 size={16} />
+                  </button>
+
+                  <button
+                    onClick={() => toggleWishlist(product._id)}
+                    aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                      inWishlist
+                        ? "bg-rose-50 text-rose-600 shadow-sm"
+                        : "bg-white/90 hover:bg-black hover:text-white text-gray-700 backdrop-blur-sm shadow-xs"
+                    }`}
+                  >
+                    <TbHeart size={18} className={inWishlist ? "fill-rose-600" : ""} />
+                  </button>
+                </div>
 
                 <img
                   src={
                     activeImage ||
                     product.image?.[0] ||
-                    "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80"
                   }
                   alt={product.name}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src =
-                      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80";
+                      "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80";
                   }}
-                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 ease-out"
+                  style={{
+                    transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                    transform: zoomPos.active ? "scale(1.7)" : "scale(1)"
+                  }}
+                  className="w-full h-full object-cover object-top transition-transform duration-200 ease-out pointer-events-none"
                 />
+
+                {/* Subtle zoom hint badge on desktop */}
+                <div className="hidden sm:block absolute bottom-3 left-3 bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg pointer-events-none">
+                  Hover to inspect fabric
+                </div>
               </div>
             </div>
 
@@ -218,6 +283,13 @@ const ProductDetails = () => {
                       Save {formatPrice(product.price - product.offerPrice)}
                     </span>
                   )}
+                </div>
+
+                {/* Live Social Proof Urgency Ticker */}
+                <div className="mt-3 inline-flex items-center gap-2 text-xs font-bold text-amber-800 bg-amber-50/90 border border-amber-200/60 px-3 py-1.5 rounded-xl">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                  <FiZap className="text-amber-600 shrink-0" size={13} />
+                  <span>Popular: {viewingCount} shoppers are viewing this piece right now</span>
                 </div>
                 <p className="text-[11px] text-gray-400 mt-1 font-medium">
                   Inclusive of all taxes (GST 5%). Free delivery on orders over ₹999.
@@ -285,11 +357,11 @@ const ProductDetails = () => {
               </div>
 
               {/* ACTION CTAs: Add to Bag & Buy Now */}
-              <div className="flex flex-col sm:flex-row gap-3 mt-6">
+              <div className="flex flex-col sm:flex-row gap-3.5 mt-6">
                 <button
                   onClick={() => addToCart(product._id, selectedSize)}
                   disabled={!product.inStock}
-                  className="flex-1 flex items-center justify-center gap-2.5 bg-black text-white h-13 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-neutral-800 transition-all shadow-md active:scale-98 disabled:opacity-50"
+                  className="sheen-wrapper flex-1 flex items-center justify-center gap-2.5 bg-neutral-950 text-white h-13 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-neutral-800 transition-all shadow-md active:scale-98 disabled:opacity-50"
                 >
                   <TbShoppingBagPlus size={18} />
                   <span>Add To Bag</span>
@@ -298,7 +370,7 @@ const ProductDetails = () => {
                 <button
                   onClick={handleBuyNow}
                   disabled={!product.inStock}
-                  className="flex-1 flex items-center justify-center gap-2 bg-neutral-100 hover:bg-neutral-200 text-black border border-neutral-300 h-13 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all active:scale-98 disabled:opacity-50"
+                  className="flex-1 flex items-center justify-center gap-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-950 border border-neutral-300 h-13 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider transition-all active:scale-98 disabled:opacity-50 shadow-2xs"
                 >
                   <FiZap size={16} />
                   <span>Buy Now</span>
@@ -434,6 +506,37 @@ const ProductDetails = () => {
         </div>
 
       </div>
+
+      {/* ================= STICKY MOBILE CONVERSION BAR ================= */}
+      {showStickyBar && (
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-gray-200 px-4 py-2.5 shadow-[0_-8px_30px_rgba(0,0,0,0.15)] flex items-center justify-between gap-3 animate-slideUp">
+          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+            <img
+              src={activeImage || product.image?.[0]}
+              alt={product.name}
+              className="w-11 h-13 rounded-xl object-cover object-top border border-gray-200 shrink-0"
+            />
+            <div className="min-w-0">
+              <p className="text-xs font-black text-black truncate uppercase leading-tight">{product.name}</p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-sm font-black text-black">{formatPrice(product.offerPrice)}</span>
+                {product.price > product.offerPrice && (
+                  <span className="text-[10px] text-gray-400 line-through">{formatPrice(product.price)}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={() => addToCart(product._id, selectedSize)}
+            disabled={!product.inStock}
+            className="sheen-wrapper shrink-0 bg-neutral-950 text-white px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 shadow-md active:scale-95 disabled:opacity-50"
+          >
+            <TbShoppingBagPlus size={16} />
+            <span>Add {selectedSize ? `(${selectedSize})` : ""}</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

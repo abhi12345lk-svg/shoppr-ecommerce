@@ -2,10 +2,33 @@ import Stripe from "stripe";
 import orderModel from "../models/order.model.js";
 import productModel from "../models/product.model.js";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+let stripeInstance = null;
+const getStripeInstance = () => {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey || secretKey === "sk_test_your_stripe_secret_key") {
+    return null;
+  }
+  if (!stripeInstance) {
+    try {
+      stripeInstance = new Stripe(secretKey);
+    } catch (err) {
+      console.error("Stripe initialization error:", err.message);
+      return null;
+    }
+  }
+  return stripeInstance;
+};
 
 export const stripePayment = async (req, res) => {
   try {
+    const stripe = getStripeInstance();
+    if (!stripe) {
+      return res.status(400).json({
+        success: false,
+        message: "Stripe payment gateway is not configured. Please set a valid STRIPE_SECRET_KEY in backend/.env"
+      });
+    }
+
     const { items, address, userId } = req.body;
 
     /* ================= GET PRODUCTS ================= */

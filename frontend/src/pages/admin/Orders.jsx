@@ -160,7 +160,7 @@ const Orders = () => {
                       <div key={idx} className="py-3 first:pt-0 last:pb-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                           <img
-                            src={item.product?.image?.[0] || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80"}
+                            src={item.product?.image?.[0] || "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80"}
                             alt="product"
                             className="w-14 h-16 object-cover rounded-xl bg-neutral-100 border border-gray-200 shrink-0"
                           />

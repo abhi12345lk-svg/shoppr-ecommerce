@@ -192,15 +192,23 @@ const CartTotal = () => {
       <button
         onClick={() => navigate("/place-order")}
         disabled={subtotal === 0}
-        className="w-full mt-6 btn-dark !py-4 !rounded-2xl text-xs sm:text-sm uppercase tracking-wider font-bold shadow-lg"
+        className="sheen-wrapper w-full mt-6 btn-dark !py-4 !rounded-2xl text-xs sm:text-sm uppercase tracking-wider font-black shadow-xl cursor-pointer disabled:opacity-50"
       >
-        Proceed to Checkout
+        Proceed to Checkout • {formatPrice(total)}
       </button>
 
       {/* Trust reassurance */}
-      <div className="flex items-center justify-center gap-2 mt-4 text-[11px] text-gray-400">
+      <div className="flex items-center justify-center gap-2 mt-4 text-[11px] text-gray-500 font-medium">
         <FiShield className="text-emerald-600" />
         <span>100% Secure Checkout with 256-bit SSL</span>
+      </div>
+
+      {/* Payment Partner Badges */}
+      <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-center gap-2 flex-wrap text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+        <span className="px-2 py-0.5 bg-neutral-100 rounded-md text-neutral-600">UPI</span>
+        <span className="px-2 py-0.5 bg-neutral-100 rounded-md text-neutral-600">Cards</span>
+        <span className="px-2 py-0.5 bg-neutral-100 rounded-md text-neutral-600">NetBanking</span>
+        <span className="px-2 py-0.5 bg-neutral-100 rounded-md text-neutral-600">Cash on Delivery</span>
       </div>
     </div>
   );

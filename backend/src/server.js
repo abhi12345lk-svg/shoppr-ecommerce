@@ -1,5 +1,4 @@
 import cookieParser from 'cookie-parser';
-
 import 'dotenv/config';
 
 import express from 'express';  
@@ -70,7 +69,7 @@ const corsOptions = {
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'token', 'adminToken'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'token', 'adminToken', 'admintoken', 'admin-token'],
   optionsSuccessStatus: 200
 };
 

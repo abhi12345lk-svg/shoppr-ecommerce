@@ -6,7 +6,22 @@ import ShippingService from "../services/shippingService.js";
 import Stripe from "stripe";
 
 /* ================= STRIPE ================= */
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+let stripeInstance = null;
+const getStripeInstance = () => {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey || secretKey === "sk_test_your_stripe_secret_key") {
+    return null;
+  }
+  if (!stripeInstance) {
+    try {
+      stripeInstance = new Stripe(secretKey);
+    } catch (err) {
+      console.error("Stripe initialization error:", err.message);
+      return null;
+    }
+  }
+  return stripeInstance;
+};
 
 /* ================= PRICING CONSTANTS ================= */
 const DEFAULT_DELIVERY_CHARGES = 99; // Standard express delivery in INR
@@ -154,6 +169,14 @@ export const placeOrderStripe = async (req, res) => {
 
     if (!address) {
       return res.status(400).json({ success: false, message: "Delivery address is required" });
+    }
+
+    const stripe = getStripeInstance();
+    if (!stripe) {
+      return res.status(400).json({
+        success: false,
+        message: "Stripe payment gateway is not configured. Please set a valid STRIPE_SECRET_KEY in backend/.env"
+      });
     }
 
     const frontendOrigin = req.headers.origin || process.env.FRONTEND_URL || "http://localhost:5173";

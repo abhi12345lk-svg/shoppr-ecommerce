@@ -53,27 +53,27 @@ import blog4 from "../assets/blogs/blog4.png";
 export const categories = [
   {
     name: "Men",
-    image: men,
+    image: "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?auto=format&fit=crop&w=800&q=80",
   },
   {
     name: "Women",
-    image: women,
-  },
-  {
-    name: "Kids",
-    image: kids,
+    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80",
   },
   {
     name: "Footwear",
-    image: Footwear,
+    image: "https://images.unsplash.com/photo-1595341888016-a392ef81b7de?auto=format&fit=crop&w=800&q=80",
   },
   {
     name: "Winterwear",
-    image: Winterwear,
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=80",
   },
   {
     name: "Sportswear",
-    image: Sportswear,
+    image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    name: "Kids",
+    image: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80",
   },
 ];
 

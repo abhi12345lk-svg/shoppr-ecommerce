@@ -1,8 +1,8 @@
 // ======================= COLLECTION.JSX (FASHION PLP) =======================
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { FiFilter, FiX, FiCheck } from "react-icons/fi";
+import { FiFilter, FiX, FiCheck, FiGrid } from "react-icons/fi";
 import Item from "../components/Item";
 import { ShopContext } from "../Context/ShopContext";
 
@@ -24,9 +24,21 @@ const Collection = () => {
   const [minDiscount, setMinDiscount] = useState(0);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [gridCols, setGridCols] = useState(4);
   const [currPage, setCurrPage] = useState(1);
 
   const itemsPerPage = 12;
+
+  // Real live category item counts
+  const categoryCounts = useMemo(() => {
+    const counts = {};
+    ["Men", "Women", "Footwear", "Winterwear", "Sportswear", "Kids"].forEach((cat) => {
+      counts[cat.toLowerCase()] = products.filter(
+        (p) => p.category?.toLowerCase() === cat.toLowerCase()
+      ).length;
+    });
+    return counts;
+  }, [products]);
 
   // Extract all available subcategories dynamically
   const availableSubCategories = [
@@ -295,8 +307,30 @@ const Collection = () => {
             </p>
           </div>
 
-          {/* Sort Dropdown & Mobile Filter Trigger */}
-          <div className="flex items-center gap-2.5 self-start md:self-auto">
+          {/* Sort Dropdown, Grid Switcher & Mobile Filter Trigger */}
+          <div className="flex items-center gap-2.5 self-start md:self-auto flex-wrap">
+            {/* Desktop Layout Switcher */}
+            <div className="hidden xl:flex items-center bg-white border border-gray-200 rounded-xl p-0.5 shadow-xs">
+              <button
+                onClick={() => setGridCols(3)}
+                title="Editorial 3-Column View"
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  gridCols === 3 ? "bg-black text-white shadow-xs" : "text-gray-500 hover:text-black"
+                }`}
+              >
+                3 Col
+              </button>
+              <button
+                onClick={() => setGridCols(4)}
+                title="Compact 4-Column View"
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  gridCols === 4 ? "bg-black text-white shadow-xs" : "text-gray-500 hover:text-black"
+                }`}
+              >
+                4 Col
+              </button>
+            </div>
+
             <span className="text-xs font-bold uppercase tracking-wider text-gray-400 hidden sm:inline">
               Sort by:
             </span>
@@ -315,7 +349,7 @@ const Collection = () => {
 
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="lg:hidden flex items-center gap-1.5 bg-black text-white px-3.5 py-2 rounded-xl text-xs font-bold"
+              className="lg:hidden flex items-center gap-1.5 bg-black text-white px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer"
             >
               <FiFilter size={13} />
               <span>{showFilters ? "Close" : "Filters"}</span>
@@ -429,6 +463,7 @@ const Collection = () => {
                 <div className="space-y-1">
                   {["Men", "Women", "Footwear", "Winterwear", "Sportswear", "Kids"].map((cat, idx) => {
                     const isChecked = selectedCategories.includes(cat.toLowerCase());
+                    const count = categoryCounts[cat.toLowerCase()] || 0;
                     return (
                       <label
                         key={idx}
@@ -436,7 +471,12 @@ const Collection = () => {
                           isChecked ? "bg-black text-white" : "text-gray-700 hover:bg-gray-50"
                         }`}
                       >
-                        <span>{cat}</span>
+                        <div className="flex items-center gap-2">
+                          <span>{cat}</span>
+                          <span className={`text-[10px] ${isChecked ? "text-neutral-300" : "text-gray-400"}`}>
+                            ({count})
+                          </span>
+                        </div>
                         <input
                           type="checkbox"
                           checked={isChecked}
@@ -581,7 +621,13 @@ const Collection = () => {
           <div>
             {currentProducts.length > 0 ? (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-4.5">
+                <div
+                  className={`grid grid-cols-2 sm:grid-cols-3 ${
+                    gridCols === 3
+                      ? "lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3"
+                      : "lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+                  } gap-3 sm:gap-4 lg:gap-4.5`}
+                >
                   {currentProducts.map((product) => (
                     <Item key={product._id} product={product} />
                   ))}

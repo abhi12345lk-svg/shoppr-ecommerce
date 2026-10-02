@@ -48,6 +48,18 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  /* ================= KEYBOARD SHORTCUT (CTRL+K / CMD+K) ================= */
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setShowSearchModal((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   /* ================= FOCUS ON SEARCH ================= */
   useEffect(() => {
     if (showSearchModal && searchInputRef.current) {
@@ -98,7 +110,7 @@ const Header = () => {
         title: "Streetwear Drops",
         subtitle: "Heavyweight boxy tees, cargos & relaxed layers",
         image:
-          "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?auto=format&fit=crop&w=500&q=80",
+          "https://images.unsplash.com/photo-1550995694-3f5f4a7e1ed2?auto=format&fit=crop&w=500&q=80",
         tag: "NEW SEASON",
         path: "/collection/men?subCategory=Oversized Tees"
       },
@@ -118,7 +130,7 @@ const Header = () => {
         title: "Chic Tailored Fits",
         subtitle: "Co-ord sets, contour tops & trousers",
         image:
-          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=500&q=80",
+          "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=500&q=80",
         tag: "TRENDING NOW",
         path: "/collection/women?subCategory=Co-ords"
       },
@@ -138,7 +150,7 @@ const Header = () => {
         title: "Pure European Linen",
         subtitle: "Breathable holiday shirts & camp collars",
         image:
-          "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80",
+          "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=500&q=80",
         tag: "BESTSELLERS",
         path: "/collection?subCategory=Shirts"
       },
@@ -158,7 +170,7 @@ const Header = () => {
         title: "Parachute & Cargos",
         subtitle: "Multi-pocket technical utility",
         image:
-          "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=500&q=80",
+          "https://images.unsplash.com/photo-1550345332-09e3ac987658?auto=format&fit=crop&w=500&q=80",
         tag: "HOT STYLES",
         path: "/collection?subCategory=Cargo Pants"
       },
@@ -177,7 +189,7 @@ const Header = () => {
         title: "Winter Essentials",
         subtitle: "Double-breasted overcoats & 450 GSM fleece",
         image:
-          "https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=500&q=80",
+          "https://images.unsplash.com/photo-1543332164-6e82f355badc?auto=format&fit=crop&w=500&q=80",
         tag: "LIMITED DROP",
         path: "/collection/winterwear?subCategory=Trench & Wool Coats"
       },
@@ -195,7 +207,7 @@ const Header = () => {
         title: "Retro Street Kicks",
         subtitle: "High-density cushioned platforms & leather loafers",
         image:
-          "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=500&q=80",
+          "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=500&q=80",
         tag: "RESTOCKED",
         path: "/collection/footwear?subCategory=Sneakers"
       },
@@ -220,32 +232,35 @@ const Header = () => {
 
       {/* ================= 2. MAIN HEADER (SNITCH DESKTOP + SAVANA MOBILE) ================= */}
       <header
-        className={`sticky top-0 z-40 w-full bg-white transition-all duration-200 border-b border-gray-200/80 ${
-          scrolled ? "shadow-sm" : ""
+        className={`sticky top-0 z-40 w-full transition-all duration-300 border-b ${
+          scrolled
+            ? "bg-white/95 backdrop-blur-md shadow-xs border-neutral-200/80"
+            : "bg-white border-neutral-200/50"
         }`}
       >
         <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
-          <div className="h-[58px] sm:h-[68px] xl:h-[74px] flex items-center justify-between gap-3">
+          <div className="h-[60px] sm:h-[70px] xl:h-[76px] flex items-center justify-between gap-3">
 
             {/* ================= LEFT: LOGO & MOBILE HAMBURGER ================= */}
-            <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="flex items-center gap-2.5 sm:gap-4">
               <button
                 onClick={() => setMenuOpen(true)}
                 aria-label="Open mobile menu"
-                className="xl:hidden p-1.5 text-black hover:text-gray-600 transition-colors"
+                className="xl:hidden p-2 -ml-2 text-neutral-900 hover:text-black rounded-lg hover:bg-neutral-100 transition-colors"
               >
                 <FiMenu size={22} />
               </button>
 
               <Link
                 to="/"
-                className="flex items-center select-none tracking-tight group"
+                className="flex items-center select-none group"
               >
-                <span className="font-display text-[22px] sm:text-[28px] xl:text-[30px] font-black uppercase text-black tracking-[-0.5px]">
+                <span className="font-display text-[22px] sm:text-[27px] font-black uppercase text-neutral-950 tracking-[-0.03em] transition-transform group-hover:scale-[1.01]">
                   SHOPPR
                 </span>
-                <span className="text-[22px] sm:text-[28px] xl:text-[30px] font-black text-black leading-none ml-0.5">
-                  •
+                <span className="w-2 h-2 rounded-full bg-neutral-950 inline-block ml-1 group-hover:bg-amber-500 transition-colors" />
+                <span className="hidden sm:inline-block ml-2 text-[9px] font-black tracking-[0.2em] uppercase text-neutral-400 border border-neutral-200 px-1.5 py-0.5 rounded">
+                  EST. 2026
                 </span>
               </Link>
             </div>
@@ -272,12 +287,12 @@ const Header = () => {
                     <NavLink
                       to={item.path}
                       className={({ isActive }) =>
-                        `flex items-center gap-1 text-[13px] tracking-[0.5px] uppercase font-bold transition-colors py-2 ${
+                        `flex items-center gap-1 text-[13px] tracking-[0.5px] uppercase font-bold transition-all py-2 ${
                           item.isSale
-                            ? "text-[#e53e3e] hover:text-red-700 font-extrabold"
+                            ? "text-rose-600 hover:text-rose-700 font-extrabold"
                             : isCurrentActive
-                            ? "text-black relative after:absolute after:bottom-[-22px] after:left-0 after:right-0 after:h-[2px] after:bg-black font-extrabold"
-                            : "text-neutral-800 hover:text-black"
+                            ? "text-black relative after:absolute after:bottom-[-24px] after:left-0 after:right-0 after:h-[2px] after:bg-black font-extrabold"
+                            : "text-neutral-700 hover:text-black"
                         }`
                       }
                     >
@@ -292,11 +307,11 @@ const Header = () => {
 
                     {/* ================= SNITCH-STYLE MEGA DROPDOWN WITH VISUAL CAMPAIGN PREVIEW ================= */}
                     {item.hasDropdown && activeDropdown === item.label && (
-                      <div className="absolute top-[72px] left-0 min-w-[460px] bg-white border border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-2xl p-4 z-50 animate-in fade-in zoom-in-95 duration-150 grid grid-cols-2 gap-4">
+                      <div className="absolute top-[74px] left-0 min-w-[480px] bg-white border border-neutral-100 shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-2xl p-4 z-50 animate-in fade-in zoom-in-95 duration-150 grid grid-cols-2 gap-4">
                         {/* Left Column: Subcategory list */}
-                        <div className="flex flex-col gap-1 pr-2 border-r border-gray-100">
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 px-3 py-1">
-                            Categories
+                        <div className="flex flex-col gap-1 pr-2 border-r border-neutral-100">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 px-3 py-1">
+                            Curated Categories
                           </p>
                           {item.subItems?.map((sub, sIdx) => (
                             <Link
@@ -305,7 +320,7 @@ const Header = () => {
                               onClick={() => setActiveDropdown(null)}
                               className={`px-3 py-2 text-xs uppercase rounded-xl transition-colors flex items-center justify-between ${
                                 sub.isBold
-                                  ? "font-black text-black bg-neutral-50 hover:bg-neutral-100 mt-1 border-t border-gray-100 pt-2"
+                                  ? "font-black text-black bg-neutral-50 hover:bg-neutral-100 mt-1 border-t border-neutral-100 pt-2"
                                   : "font-semibold text-neutral-600 hover:text-black hover:bg-neutral-50"
                               }`}
                             >
@@ -349,18 +364,18 @@ const Header = () => {
             </nav>
 
             {/* ================= RIGHT: SEARCH, USER, WISHLIST, BAG ================= */}
-            <div className="flex items-center justify-end gap-3 sm:gap-5 text-black">
+            <div className="flex items-center justify-end gap-2.5 sm:gap-4 text-black">
 
-              {/* SEARCH (Desktop Icon / Mobile Pill is rendered below) */}
+              {/* SEARCH TRIGGER */}
               <button
                 onClick={() => setShowSearchModal(true)}
                 aria-label="Search clothing"
-                className="hidden xl:flex items-center gap-2 bg-neutral-100 hover:bg-neutral-200/80 px-3.5 py-2 rounded-full text-xs text-neutral-500 font-medium transition-colors"
+                className="hidden xl:flex items-center gap-3 bg-neutral-100/90 hover:bg-neutral-200/90 border border-neutral-200/70 px-4 py-2 rounded-full text-xs text-neutral-500 font-medium transition-all hover:border-neutral-300 shadow-2xs"
               >
-                <FiSearch size={15} />
+                <FiSearch size={14} className="text-neutral-500" />
                 <span>Search styles, fits, cargos...</span>
-                <span className="text-[10px] font-bold bg-white text-neutral-400 px-1.5 py-0.5 rounded border border-gray-200">
-                  /
+                <span className="text-[10px] font-bold bg-white text-neutral-500 px-1.5 py-0.5 rounded border border-neutral-200 shadow-2xs">
+                  ⌘K
                 </span>
               </button>
 
@@ -370,18 +385,26 @@ const Header = () => {
                   <button
                     onClick={() => setShowProfile(!showProfile)}
                     aria-label="User Account"
-                    className="p-1.5 hover:opacity-70 transition-opacity flex items-center"
+                    className="flex items-center gap-1.5 p-1 rounded-full hover:bg-neutral-100 transition-colors"
                   >
-                    <FiUser size={21} className="stroke-[1.8]" />
+                    <div className="w-8 h-8 rounded-full bg-neutral-900 text-white font-bold text-xs flex items-center justify-center shadow-xs">
+                      {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                    </div>
                   </button>
 
                   {/* Profile Dropdown */}
                   {showProfile && (
-                    <div className="absolute right-0 top-11 w-[260px] bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
-                      <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/70">
-                        <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Signed in as</p>
-                        <h4 className="font-bold text-black text-sm mt-0.5 truncate">{user.name}</h4>
-                        <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                    <div className="absolute right-0 top-12 w-[270px] bg-white border border-neutral-100 rounded-2xl overflow-hidden shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+                      <div className="px-5 py-4 border-b border-neutral-100 bg-neutral-50/80">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-neutral-900 text-white font-black text-sm flex items-center justify-center shrink-0">
+                            {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="font-bold text-neutral-900 text-sm truncate">{user.name}</h4>
+                            <p className="text-xs text-neutral-500 truncate">{user.email}</p>
+                          </div>
+                        </div>
                       </div>
 
                       <div className="p-2 flex flex-col gap-1">
@@ -390,20 +413,20 @@ const Header = () => {
                             navigate("/my-orders");
                             setShowProfile(false);
                           }}
-                          className="w-full flex items-center gap-2.5 text-left px-3.5 py-2.5 rounded-xl hover:bg-gray-50 text-[13px] font-semibold text-gray-700 transition-all"
+                          className="w-full flex items-center gap-2.5 text-left px-3.5 py-2.5 rounded-xl hover:bg-neutral-100 text-[13px] font-semibold text-neutral-700 transition-all"
                         >
                           <FiPackage size={15} />
-                          My Orders & Tracking
+                          <span>My Orders &amp; Tracking</span>
                         </button>
                         <button
                           onClick={() => {
                             navigate("/wishlist");
                             setShowProfile(false);
                           }}
-                          className="w-full flex items-center gap-2.5 text-left px-3.5 py-2.5 rounded-xl hover:bg-gray-50 text-[13px] font-semibold text-gray-700 transition-all"
+                          className="w-full flex items-center gap-2.5 text-left px-3.5 py-2.5 rounded-xl hover:bg-neutral-100 text-[13px] font-semibold text-neutral-700 transition-all"
                         >
                           <FiHeart size={15} />
-                          Wishlist ({getWishlistCount()})
+                          <span>Wishlist ({getWishlistCount()})</span>
                         </button>
                         <button
                           onClick={() => {
@@ -413,7 +436,7 @@ const Header = () => {
                           className="w-full flex items-center gap-2.5 text-left px-3.5 py-2.5 rounded-xl hover:bg-rose-50 text-rose-600 text-[13px] font-semibold transition-all"
                         >
                           <FiLogOut size={15} />
-                          Logout
+                          <span>Logout</span>
                         </button>
                       </div>
                     </div>
@@ -423,9 +446,9 @@ const Header = () => {
                 <button
                   onClick={() => setShowUserLogin(true)}
                   aria-label="Login / Sign Up"
-                  className="p-1.5 hover:opacity-70 transition-opacity"
+                  className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-neutral-100 transition-colors text-neutral-800"
                 >
-                  <FiUser size={21} className="stroke-[1.8]" />
+                  <FiUser size={20} className="stroke-[1.8]" />
                 </button>
               )}
 
@@ -433,11 +456,11 @@ const Header = () => {
               <button
                 onClick={() => navigate("/wishlist")}
                 aria-label="Wishlist"
-                className="relative p-1.5 hover:opacity-70 transition-opacity"
+                className="relative w-9 h-9 rounded-full flex items-center justify-center hover:bg-neutral-100 transition-colors text-neutral-800"
               >
-                <FiHeart size={21} className="stroke-[1.8]" />
+                <FiHeart size={20} className="stroke-[1.8]" />
                 {getWishlistCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-[17px] h-[17px] rounded-full bg-rose-600 text-white text-[9px] flex items-center justify-center font-bold px-1">
+                  <span className="absolute 1 top-0.5 right-0.5 min-w-[18px] h-[18px] rounded-full bg-rose-600 text-white text-[9px] flex items-center justify-center font-bold px-1 shadow-xs">
                     {getWishlistCount()}
                   </span>
                 )}
@@ -447,11 +470,11 @@ const Header = () => {
               <button
                 onClick={() => navigate("/cart")}
                 aria-label="Shopping Bag"
-                className="relative p-1.5 hover:opacity-70 transition-opacity"
+                className="relative w-9 h-9 rounded-full flex items-center justify-center hover:bg-neutral-100 transition-colors text-neutral-800"
               >
-                <FiShoppingBag size={21} className="stroke-[1.8]" />
+                <FiShoppingBag size={20} className="stroke-[1.8]" />
                 {getCartCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-[17px] h-[17px] rounded-full bg-black text-white text-[9px] flex items-center justify-center font-bold px-1">
+                  <span className="absolute top-0.5 right-0.5 min-w-[18px] h-[18px] rounded-full bg-neutral-950 text-white text-[9px] flex items-center justify-center font-bold px-1 shadow-xs">
                     {getCartCount()}
                   </span>
                 )}
